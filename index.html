@@ -283,7 +283,7 @@ input[type=range]{cursor:pointer}
 
 /* ② 계산 */
 .formula{margin:0 0 10px;padding:8px 10px;border-left:3px solid var(--e-elec);background:var(--e-elec-soft);font:700 13px/1.5 var(--font-ui);color:var(--text-1);border-radius:0 var(--r-1) var(--r-1) 0}
-.csteps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.csteps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 .cstep{padding:9px 10px 7px;border:1px solid var(--line-1);border-radius:var(--r-2);background:var(--surface-0)}
 .cstep[data-state="ok"]{border-color:color-mix(in oklab,var(--ok) 55%,var(--line-1))}
 .cstep.extra{border-style:dashed}
@@ -566,6 +566,7 @@ dialog.drawer.sheet{--lift:0px}
   .tool.save{width:44px;height:44px;padding:0;justify-content:center}
   .bench-head{align-items:flex-start}
   .status{font-size:15px;padding:10px 12px}
+  .panel{overflow:visible}  /* overflow:hidden이면 sticky 하단이 패널 기준으로 62px 올라가 기록표 마지막 줄을 가린다 */
   .panel-foot{bottom:calc(62px + env(safe-area-inset-bottom))}
   .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
   .rec .c-w{width:34%}
@@ -891,6 +892,7 @@ const ICONS = {
   pause: '<path d="M8.5 5.5v13M15.5 5.5v13"/>',
   step: '<path class="fill" d="M5.5 6v12l8.5-6Z"/><path d="M17.5 6v12"/>',
   check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  chevron: '<path d="m9 6 6 6-6 6"/>',
   x: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   trash: '<path d="M5 7h14M10 7V4.5h4V7M7 7l1 13h8l1-13"/>',
   undo: '<path d="M9 14 4.5 9.5 9 5"/><path d="M4.5 9.5H14a5.5 5.5 0 0 1 0 11h-3"/>',
@@ -1678,7 +1680,7 @@ class ConvScene {
 class KettleScene {
   constructor(el, st, o = {}) { this.el = el; this.st = st; this.p = o.prefix || 'kt-'; this.mode = o.mode || 'land'; this.fx = [{}, {}]; this.t = 0; this.clock = [1, 1]; this.pk = []; this.unit = o.unit || (() => 'J'); }
   L() {
-    if (this.mode === 'port') return { W: 600, H: 900, counter: 560, kx: [128, 472], ks: 0.78, hudY: 174, timer: [300, 34, 'middle'], strip: [240, 360], bars: { x: 24, y: 642, w: 552, gap: 118, port: true } };
+    if (this.mode === 'port') return { W: 600, H: 900, counter: 560, kx: [128, 472], hx: [150, 450], ks: 0.78, hudY: 174, timer: [300, 34, 'middle'], strip: [240, 360], bars: { x: 24, y: 642, w: 552, gap: 118, port: true } };
     if (this.mode === 'mini') return { W: 640, H: 360, counter: 300, kx: [230, 490], ks: 0.66, hudY: 38, timer: [22, 40, 'start'], strip: [26, 120], bars: null, mini: true };
     return { W: 1000, H: 600, counter: 432, kx: [410, 750], ks: 0.94, hudY: 60, timer: [40, 64, 'start'], strip: [36, 236], bars: { x: 300, y: 488, w: 560, gap: 56 } };
   }
@@ -1713,7 +1715,7 @@ class KettleScene {
     s += `<g id="${p}pk"></g>`;
     // 판독
     this.kt.forEach((k, i) => {
-      const x = k.kx, y = L.hudY;
+      const x = L.hx ? L.hx[i] : k.kx, y = L.hudY;   // 세로 화면: '사용한 전기 에너지 384,000 J'가 그림 밖으로 잘리지 않게 글자만 안쪽으로
       if (mini) {
         s += `<text x="${x}" y="${y}" text-anchor="middle" class="t-name">${k.pot.name} <tspan id="${p}w${i}" class="t-w">0 W</tspan></text>`;
         s += `<text x="${x}" y="${y + 24}" text-anchor="middle" class="t-hud">사용한 전기 에너지 <tspan id="${p}e${i}" class="b">0 J</tspan></text>`;
