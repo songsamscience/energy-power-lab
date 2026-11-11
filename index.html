@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
-<meta name="version" content="2.5">
+<meta name="version" content="2.6">
 <meta name="description" content="전기 기구를 전력 측정기에 꽂아 전기 에너지가 빛·열·운동·소리·화학 에너지로 전환되는 모습을 보고, 소비 전력·전력량·에너지 소비 효율 등급을 탐구하는 중학교 과학 가상실험실">
 <meta property="og:title" content="송쌤과학 가상실험실 | 전기 에너지의 전환과 소비 전력">
-<meta property="og:description" content="1초마다 들어가는 전기 에너지로 소비 전력을 이해하고, 주전자·전등·냉장고 등급을 비교하는 가상실험실">
+<meta property="og:description" content="1초마다 들어가는 전기 에너지로 소비 전력을 이해하고, 소비 전력·전력량 계산을 연습하며, 에너지 소비 효율 등급 라벨을 읽고 비교하는 가상실험실">
 <meta name="theme-color" id="metaTheme" content="#101b28">
 <title>송쌤과학 가상실험실 | 전기 에너지의 전환과 소비 전력</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101b28'/%3E%3Cpath d='M10 32h14' stroke='%238fa2ff' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M24 32c10 0 12-14 30-14M24 32h30M24 32c10 0 12 14 30 14' fill='none' stroke='%23ffd43b' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -283,7 +283,7 @@ input[type=range]{cursor:pointer}
 
 /* ② 계산 */
 .formula{margin:0 0 10px;padding:8px 10px;border-left:3px solid var(--e-elec);background:var(--e-elec-soft);font:700 13px/1.5 var(--font-ui);color:var(--text-1);border-radius:0 var(--r-1) var(--r-1) 0}
-.csteps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.csteps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 .cstep{padding:9px 10px 7px;border:1px solid var(--line-1);border-radius:var(--r-2);background:var(--surface-0)}
 .cstep[data-state="ok"]{border-color:color-mix(in oklab,var(--ok) 55%,var(--line-1))}
 .cstep.extra{border-style:dashed}
@@ -566,6 +566,7 @@ dialog.drawer.sheet{--lift:0px}
   .tool.save{width:44px;height:44px;padding:0;justify-content:center}
   .bench-head{align-items:flex-start}
   .status{font-size:15px;padding:10px 12px}
+  .panel{overflow:visible}  /* overflow:hidden이면 sticky 하단이 패널 기준으로 62px 올라가 기록표 마지막 줄을 가린다 */
   .panel-foot{bottom:calc(62px + env(safe-area-inset-bottom))}
   .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
   .rec .c-w{width:34%}
@@ -635,6 +636,83 @@ dialog.drawer.sheet{--lift:0px}
 .fx{pointer-events:none}
 
 .reward-art{width:210px;height:210px;object-fit:cover;border-radius:20px;margin:12px auto}.mission-card{padding:16px;margin:10px 0;border:1px solid var(--line-2);border-radius:12px}.mission-card.done{border-color:var(--ok);background:var(--ok-soft)}.mission-card h3{font-size:16px}.mission-card p{margin:6px 0 12px}.mission-intro{padding:14px;background:var(--rev-soft);border-radius:12px}.mission-meter{width:100%;accent-color:var(--ok)}@media(max-width:640px){.top-title{display:none}.topbar{gap:4px;padding:0 6px}.utilities{gap:0}.utilities .icon-btn{width:30px}.utilities .hsep{display:none}.word{font-size:11px}.brand .social,.brand .vdiv{display:none}#missionBtn,#musicBtn{padding:0 7px;font-size:12px}}
+/* ── v2.6 계산 연습 · 등급 라벨 분석 ── */
+.dlv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.dlv-b{position:relative;display:grid;gap:2px;align-content:start;min-height:56px;padding:8px 22px 7px 9px;border:1px solid var(--line-1);border-radius:var(--r-2);background:var(--surface-0);color:var(--text-1);text-align:left;cursor:pointer;font:600 13px/1.3 var(--font-ui)}
+.dlv-b::before{content:'';position:absolute;inset:-3px 0}
+.dlv-b b{font-weight:800}
+.dlv-b span{font-size:12px;line-height:1.35;color:var(--text-2);font-weight:500}
+.dlv-b i{position:absolute;top:7px;right:8px;font:800 12px/1 var(--font-ui);font-style:normal;color:var(--text-3)}
+.dlv-b.has i{color:var(--ok)}
+.dlv-b[aria-pressed="true"]{border-color:var(--text-1);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--text-1)}
+@media (hover:hover) and (pointer:fine){.dlv-b:hover{background:var(--surface-2)}}
+.lsets{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dkind{font:600 12px/1.3 var(--font-ui);color:var(--text-2)}
+.dcard{padding:11px 12px 10px}
+.dq-text{margin:0 0 10px;font-size:15px;line-height:1.65;color:var(--text-1)}
+.dq-text b{font-weight:800}
+.dcard .crow.choice{flex-wrap:wrap}
+.dcard .crow.choice .btn{flex:1 1 140px}
+.dcard[data-state="ok"] .cfb{color:var(--ok)}
+.dhint{display:flex;gap:6px;align-items:flex-start;margin:8px 0 0;padding:7px 10px;border-radius:var(--r-1);background:var(--warn-soft);font-size:13px;line-height:1.55;color:var(--text-1)}
+.dhint svg.ic{width:15px;height:15px;margin-top:2px}
+.dhint[hidden]{display:none}
+.dsteps{margin:8px 0 0;padding:8px 10px 8px 28px;border-radius:var(--r-1);background:var(--ok-soft);font-size:13px;line-height:1.7;color:var(--text-1)}
+.dsteps b{font-weight:800}
+.dscore{margin:0;font:600 13px/1.35 var(--font-ui);color:var(--text-2)}
+.dscore b{font-weight:800;color:var(--text-1)}
+.drow-btns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.dmemo{margin:0;padding-left:18px;font-size:13px;line-height:1.75;color:var(--text-2)}
+.dmemo b{color:var(--text-1)}
+.lread{padding:9px 11px 10px;border:1px solid var(--line-1);border-radius:var(--r-2);background:var(--surface-0)}
+.lread+.lread{margin-top:8px}
+.lread-h{display:flex;align-items:center;gap:6px;font:800 13px/1.3 var(--font-ui);margin:0 0 4px;color:var(--text-1)}
+.ltag{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:var(--r-full);background:var(--surface-2);font:800 13px/1 var(--font-ui)}
+.lfield{display:grid;grid-template-columns:minmax(0,1fr) 112px 52px 18px;align-items:center;gap:6px;padding:6px 0;border-top:1px solid var(--line-1)}
+.lread-h+.lfield{border-top:0}
+.lk{display:flex;align-items:center;font:600 13px/1.35 var(--font-ui);color:var(--text-1)}
+.mk{flex:none;display:inline-grid;place-items:center;width:18px;height:18px;margin-right:6px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line-2);font:800 12px/1 var(--font-ui);font-style:normal;color:var(--text-1)}
+.lfield input{width:100%;min-width:0;height:34px;padding:0 8px;border:1px solid var(--line-2);border-radius:var(--r-1);background:var(--surface-1);font-size:16px;text-align:right;font-variant-numeric:tabular-nums}
+.lfield input.ok{border-color:var(--ok)}
+.lfield input.bad{border-color:var(--warn)}
+.lfield .cu{font-size:12px;min-width:0}
+.gpick{grid-column:span 2;display:flex;gap:4px}
+.gpick button{position:relative;flex:1;min-width:0;height:32px;border:1px solid var(--line-2);border-radius:var(--r-1);background:var(--surface-1);color:var(--text-1);font:800 13px/1 var(--font-ui);cursor:pointer;box-shadow:inset 0 -3px 0 var(--gc)}
+.gpick button::before{content:'';position:absolute;inset:-6px -2px}
+.gpick button[aria-pressed="true"]{border:2px solid var(--gc);background:color-mix(in oklab,var(--gc) 26%,var(--surface-1))}
+.lok{display:grid;place-items:center;width:18px;height:18px;font:800 13px/1 var(--font-ui)}
+.lok.ok{color:var(--ok)}
+.lok.bad{color:var(--warn)}
+.lok svg.ic{width:16px;height:16px;stroke-width:2.6}
+.lread-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.lread-foot .cfb{margin:0;flex:1}
+.lmeta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.lmeta label{display:grid;gap:4px;font:600 12px/1.3 var(--font-ui);color:var(--text-2)}
+.lmeta input{width:100%;min-width:0;height:34px;padding:0 8px;border:1px solid var(--line-2);border-radius:var(--r-1);background:var(--surface-1)}
+.lmodel{margin:8px 0 0;padding:8px 10px;border-left:3px solid var(--ok);background:var(--ok-soft);border-radius:0 var(--r-1) var(--r-1) 0;font-size:13px;line-height:1.65;color:var(--text-1)}
+.lmodel[hidden]{display:none}
+#lConcl{margin-top:6px}
+.t-dk{font-size:15px;font-weight:600;fill:var(--text-2)}
+.t-dv{font-size:26px;font-weight:800;fill:var(--text-1);font-variant-numeric:tabular-nums}
+.t-dv.ask{fill:var(--warn)}
+.t-blk{font-size:15px;font-weight:700;fill:var(--text-1);font-variant-numeric:tabular-nums}
+.t-blk.ask{fill:var(--warn)}
+.t-blk.sub{font-weight:500;fill:var(--text-2)}
+.t-eq{font-size:24px;font-weight:800;fill:var(--text-1);font-variant-numeric:tabular-nums}
+.t-eq.small{font-size:20px}
+.t-eq .ask{fill:var(--warn)}
+.t-eq .ok{fill:var(--ok)}
+.t-eqk{font-size:13px;font-weight:600;fill:var(--text-2)}
+.t-mk{font-size:13px;font-weight:800;fill:var(--text-1)}
+.scene.port .t-dk{font-size:19px}
+.scene.port .t-dv{font-size:31px}
+.scene.port .t-blk{font-size:18px}
+.scene.port .t-eq{font-size:25px}
+.scene.port .t-eq.small{font-size:21px}
+.scene.port .t-eqk{font-size:16px}
+.pv .pv-h3{font:800 11pt/1.3 var(--font-ui);margin:10px 0 4px}
+@media (max-width:600px){.dlv{grid-template-columns:repeat(2,minmax(0,1fr))}.lfield{grid-template-columns:minmax(0,1fr) 96px 46px 18px}}
+.cfb.good{color:var(--ok)}
 </style>
 </head>
 <body>
@@ -680,8 +758,8 @@ dialog.drawer.sheet{--lift:0px}
 <script>
 'use strict';
 /* ───────────────────────── 과학 진실층: 값·모델은 여기 한 곳에만 둔다 ───────────────────────── */
-const APP_VERSION = '2.5';
-const APP_DATE = '2026-10-03';
+const APP_VERSION = '2.6';
+const APP_DATE = '2026-11-11';
 const LAB_ID = 'energy-v1';
 const LAB_TITLE = '전기 에너지의 전환과 소비 전력';
 const LAB_FILE = '전기에너지와소비전력';
@@ -704,7 +782,7 @@ const APPLIANCES = [
   { id: 'tv',      name: '텔레비전',      P: 100,  main: ['light', 'sound'],  also: ['heat'],           standby: 0.5, size: '가로 약 100 cm', book: false },
   { id: 'kettle',  name: '전기 주전자',   P: 1500, main: ['heat'],            also: ['sound'],          standby: 0,   size: '높이 약 25 cm',  book: true },
   { id: 'charger', name: '휴대 전화 충전', P: 15,  main: ['chem'],            also: ['heat'],           standby: 0.3, size: '휴대 전화 길이 약 15 cm', book: false },
-  { id: 'washer',  name: '세탁기',        P: 500,  main: ['motion'],          also: ['sound', 'heat'],  standby: 0,   size: '높이 약 85 cm',  book: true },
+  { id: 'washer',  name: '세탁기',        P: 500,  main: ['motion'],          also: ['sound', 'heat'],  standby: 0.5, size: '높이 약 85 cm',  book: true },
   { id: 'led',     name: 'LED 전등',      P: 9,    main: ['light'],           also: ['heat'],           standby: 0,   size: '높이 약 45 cm',  book: false },
   { id: 'dryer',   name: '헤어드라이어',  P: 1300, main: ['heat', 'motion'],  also: ['sound'],          standby: 0,   size: '길이 약 25 cm',  book: true },
   { id: 'speaker', name: '스피커',        P: 20,   main: ['sound'],           also: ['heat'],           standby: 0.5, size: '높이 약 30 cm',  book: false },
@@ -891,6 +969,7 @@ const ICONS = {
   pause: '<path d="M8.5 5.5v13M15.5 5.5v13"/>',
   step: '<path class="fill" d="M5.5 6v12l8.5-6Z"/><path d="M17.5 6v12"/>',
   check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  chevron: '<path d="m9 6 6 6-6 6"/>',
   x: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   trash: '<path d="M5 7h14M10 7V4.5h4V7M7 7l1 13h8l1-13"/>',
   undo: '<path d="M9 14 4.5 9.5 9 5"/><path d="M4.5 9.5H14a5.5 5.5 0 0 1 0 11h-3"/>',
@@ -1604,7 +1683,7 @@ class ConvScene {
     setT(q('hJ'), `${fmtW(w)} J`);
     setT(q('hT'), `${fmtFix(st.tOn || 0, 1)}초`);
     setT(q('hE'), `${fmtInt(st.E || 0)} J`);
-    setT(q('hN'), !st.plugged ? '플러그를 뽑았어요' : (!st.on && w > 0 ? `대기 전력 ${fmtW(w)} W` : (st.boiled && app.id === 'kettle' && !st.on ? '물이 끓어 자동으로 꺼졌어요' : '')));
+    setT(q('hN'), !st.plugged ? '플러그를 뽑았어요' : (!st.on && w > 0 ? `대기 전력 ${fmtW(w)} W → 열에너지` : (st.boiled && app.id === 'kettle' && !st.on ? '물이 끓어 자동으로 꺼졌어요' : '')));
     const fxSt = { on: st.on && st.plugged, plugged: st.plugged, standby: st.plugged && !st.on && app.standby > 0, T: st.T, heating: st.on && st.plugged, batt: st.batt };
     FX[app.id](q, fxSt, this.t, dt, this.fx);
     this.packets(dt, w);
@@ -1678,7 +1757,7 @@ class ConvScene {
 class KettleScene {
   constructor(el, st, o = {}) { this.el = el; this.st = st; this.p = o.prefix || 'kt-'; this.mode = o.mode || 'land'; this.fx = [{}, {}]; this.t = 0; this.clock = [1, 1]; this.pk = []; this.unit = o.unit || (() => 'J'); }
   L() {
-    if (this.mode === 'port') return { W: 600, H: 900, counter: 560, kx: [128, 472], ks: 0.78, hudY: 174, timer: [300, 34, 'middle'], strip: [240, 360], bars: { x: 24, y: 642, w: 552, gap: 118, port: true } };
+    if (this.mode === 'port') return { W: 600, H: 900, counter: 560, kx: [128, 472], hx: [150, 450], ks: 0.78, hudY: 174, timer: [300, 34, 'middle'], strip: [240, 360], bars: { x: 24, y: 642, w: 552, gap: 118, port: true } };
     if (this.mode === 'mini') return { W: 640, H: 360, counter: 300, kx: [230, 490], ks: 0.66, hudY: 38, timer: [22, 40, 'start'], strip: [26, 120], bars: null, mini: true };
     return { W: 1000, H: 600, counter: 432, kx: [410, 750], ks: 0.94, hudY: 60, timer: [40, 64, 'start'], strip: [36, 236], bars: { x: 300, y: 488, w: 560, gap: 56 } };
   }
@@ -1713,7 +1792,7 @@ class KettleScene {
     s += `<g id="${p}pk"></g>`;
     // 판독
     this.kt.forEach((k, i) => {
-      const x = k.kx, y = L.hudY;
+      const x = L.hx ? L.hx[i] : k.kx, y = L.hudY;   // 세로 화면: '사용한 전기 에너지 384,000 J'가 그림 밖으로 잘리지 않게 글자만 안쪽으로
       if (mini) {
         s += `<text x="${x}" y="${y}" text-anchor="middle" class="t-name">${k.pot.name} <tspan id="${p}w${i}" class="t-w">0 W</tspan></text>`;
         s += `<text x="${x}" y="${y + 24}" text-anchor="middle" class="t-hud">사용한 전기 에너지 <tspan id="${p}e${i}" class="b">0 J</tspan></text>`;
@@ -2192,6 +2271,12 @@ function theoryDiagram(id) {
       <text x="20" y="22" class="th-t">공급한 전기 에너지 9 J (LED 전구, 1초)</text><text x="20" y="76" class="th-t">필요한 빛 3 J → 효율 약 33 %</text>
       <g transform="translate(250 20) scale(.42)">${[0, 1, 2, 3, 4].map(i => { const a0 = Math.PI + i * Math.PI / 5, a1 = Math.PI + (i + 1) * Math.PI / 5, P = (a, r) => `${(125 + Math.cos(a) * r).toFixed(1)},${(132 + Math.sin(a) * r).toFixed(1)}`; return `<path d="M${P(a0, 98)} A98,98 0 0 1 ${P(a1, 98)} L${P(a1, 60)} A60,60 0 0 0 ${P(a0, 60)}Z" fill="var(--g${i + 1})"/>`; }).join('')}<text x="125" y="170" text-anchor="middle" class="th-grade">1 ← 효율적</text></g></svg>`;
   }
+  if (id === 'label') {
+    const seg = [0, 1, 2, 3, 4].map(i => `<rect x="${126 + i * 22}" y="22" width="20" height="16" rx="3" fill="var(--g${i + 1})"/>`).join('');
+    const mk = (n, y) => `<circle cx="104" cy="${y}" r="9" fill="var(--surface-1)" stroke="var(--text-2)"/><text x="104" y="${y + 4}" text-anchor="middle" class="th-t" style="font-size:11px;font-weight:800">${n}</text>`;
+    const row = (y, a, b) => `<text x="124" y="${y}" style="font:600 10px var(--font-ui);fill:var(--label-ink)">${a}</text><text x="250" y="${y}" text-anchor="end" style="font:800 10px var(--font-ui);fill:var(--label-ink)">${b}</text>`;
+    return `<svg ${T}="0 0 360 150" role="img" aria-label="에너지 소비 효율 등급 라벨의 네 가지 정보"><rect x="116" y="10" width="142" height="132" rx="10" fill="var(--label-bg)" stroke="var(--label-ink)" stroke-width="2"/>${seg}<path d="M137,42 l-6,9 h12z" fill="var(--label-ink)"/><text x="187" y="62" text-anchor="middle" style="font:800 10px var(--font-ui);fill:var(--label-ink)">에너지 소비 효율 등급 1</text>${row(84, '월간 소비 전력량', '30.8 kWh/월')}${row(104, 'CO₂ 배출량', '18.2 g/시간')}${row(128, '연간 에너지 비용', '59,000원')}${mk(1, 30)}${mk(2, 81)}${mk(3, 101)}${mk(4, 125)}<text x="268" y="34" class="th-t">등급</text><text x="268" y="85" class="th-t">한 달 전력량</text><text x="268" y="105" class="th-t">CO₂</text><text x="268" y="129" class="th-t">1년 요금</text></svg>`;
+  }
   return `<svg ${T}="0 0 360 130" role="img" aria-label="전원을 꺼도 플러그를 꽂아 두면 대기 전력이 흐른다">
     <rect x="20" y="30" width="60" height="80" rx="8" fill="var(--mat-white)" stroke="var(--mat-edge)"/><rect x="28" y="38" width="44" height="24" rx="3" fill="var(--lcd-bg)"/><text x="66" y="56" text-anchor="end" class="th-lcd">0.5</text>
     <path d="M80,90 H170" stroke="var(--cord-edge)" stroke-width="6"/><path d="M80,90 H170" stroke="var(--cord)" stroke-width="3.5"/>
@@ -2326,7 +2411,7 @@ function go(id) {
   S.screen = id; store.set('ui', S);
   if (kt.running) kt.running = false;
   renderRail();
-  const b = { conv: buildConv, calc: buildCalc, eff: buildEff, house: buildHouse, quiz: buildQuiz }[id];
+  const b = { conv: buildConv, calc: buildCalc, drill: buildDrill, eff: buildEff, label: buildLabel, house: buildHouse, quiz: buildQuiz }[id];
   cur = { scene: null };
   b();
   $('#main').scrollTop = 0;
@@ -2399,8 +2484,8 @@ function convStatus() {
   if (!conv.plugged) return `플러그를 뽑았어요. 전력 측정기가 0 W — 기구에 전기 에너지가 들어가지 않아요.`;
   if (conv.on) return `${josa(a.name, '을/를')} 켰어요. 전력 측정기 ${fmtW(w)} W — 1초마다 ${fmtW(w)} J의 전기 에너지가 들어가 여러 에너지로 전환돼요.${conv.bands ? ' 굵은 갈래가 향하는 에너지를 찾아보세요.' : ''}`;
   if (a.id === 'kettle' && conv.boiled) return '물이 끓어 전기 주전자가 자동으로 꺼졌어요. 다시 켜면 새 물을 데워요.';
-  if (w > 0) return `전원은 껐지만 플러그가 꽂혀 있어요. 전력 측정기에 ${fmtW(w)} W가 남아 있어요 — 대기 전력이에요.`;
-  return `${josa(a.name, '이/가')} 꺼져 있어요. 기구를 누르거나 ‘전원 켜기’를 눌러 보세요.`;
+  if (w > 0) return `전원은 껐지만 플러그가 꽂혀 있어요. 전력 측정기에 ${fmtW(w)} W가 남아 있어요 — 대기 전력이에요. 이 전기 에너지는 대부분 열에너지로 전환돼요(기구 위의 옅은 열 기둥).`;
+  return `${josa(a.name, '이/가')} 꺼져 있어요. 이 기구는 전원 스위치가 회로를 완전히 끊어서 플러그를 꽂아 두어도 측정기가 0 W예요(대기 전력 없음). 기구를 누르거나 ‘전원 켜기’를 눌러 보세요.`;
 }
 function convPower() {
   const a = APP_BY_ID[conv.id];
@@ -2566,7 +2651,7 @@ function buildEff() {
       <ul class="readlist">${read.map(([k, t, d]) => `<li><button class="readbtn" data-focus="${k}" aria-pressed="${labels.focus === k}"><b>${t}</b><span>${d}</span></button></li>`).join('')}</ul></section>
       <section class="pg"><h2 class="pg-title">1등급과 5등급 비교 <span class="count" id="labYs">${labels.years}년</span></h2>
       <table class="cmp"><thead><tr><th></th><th>1등급</th><th>5등급</th><th>차이</th></tr></thead><tbody id="labCmp">${labCmpRows(a, c)}</tbody></table>
-      <p class="help">세 냉장고는 크기(714 L)와 성능이 같아요. 값은 교과서의 에너지 소비 효율 등급 표 그대로예요.</p></section></div>`;
+      <p class="help">세 냉장고는 크기(714 L)와 성능이 같아요. 값은 교과서의 에너지 소비 효율 등급 표 그대로예요.</p><p class="help"><button class="linkbtn" data-go="label">${icon('navLabel')}등급 라벨을 직접 읽고 분석하기</button></p></section></div>`;
   }
   $('#main').innerHTML = labShell('eff', { headExtra: seg, tools, panel, goal: mode === 'lamp' ? '밝기가 같은 세 전등이 1초 동안 쓰는 전기 에너지와 효율을 비교해요' : '크기·성능이 같은 냉장고의 에너지 소비 효율 등급 표를 비교해요', panelLabel: '비교 표' });
   if (mode === 'lamp') mountScene(new LampScene($('#stage'), lamps));
@@ -2752,7 +2837,9 @@ function openHelp() {
     <h3>이렇게 써요</h3>
     <ol><li><b>에너지 전환</b> — 오른쪽에서 기구를 고르고, 기구를 누르거나 ‘전원 켜기’를 눌러요. 전력 측정기의 W와 1초마다 들어가는 ‘+… J’ 꾸러미, 에너지 갈래를 봐요. ‘주로 전환되는 에너지’를 골라 ‘기록하기’를 눌러요.</li>
     <li><b>소비 전력 계산</b> — 두 전기 주전자를 ‘동시에 켜기’로 데우고, 오른쪽 ‘계산해 보기’를 풀어요.</li>
+    <li><b>계산 연습</b> — 단계를 고르고 소비 전력(J·W)·전력량(Wh·kWh)·분→시간·비교·한 달 요금 문제를 풀어요. 막히면 ‘힌트’, ‘풀이 보기’. 맞히면 그림에 값이 채워져요. 답 칸에서 <kbd>Enter</kbd> = 확인 · 다음 문제.</li>
     <li><b>에너지 효율</b> — ‘같은 밝기 조명’과 ‘효율 등급 표’를 바꿔 가며 비교해요.</li>
+    <li><b>등급 라벨</b> — 두 제품의 에너지 소비 효율 등급 라벨에서 ① 등급 ② 월간 소비 전력량 ③ CO₂ 배출량 ④ 연간 에너지 비용을 읽어 적고, 차이·1년·10년·% 를 계산한 뒤 결론을 써요. ‘직접 입력’은 집에서 본 라벨 값을 넣어 비교해요.</li>
     <li><b>우리 집 전력량</b> — 하루 사용 시간을 정하고 절약 방법을 적용해 전력량 변화를 봐요.</li>
     <li><b>탐구 질문</b> — 간이 실험을 해 보고 내 문장으로 답해요. 모범 답안을 열면 처음 답안 잠금 · 아래에 다시 쓰기.</li></ol>
     <h3>단축키</h3>
@@ -2762,11 +2849,13 @@ function openHelp() {
     <h3>모형의 조건과 한계</h3>
     <ul><li>소비 전력: 진공청소기 1800 W·전기 주전자 1500 W/1600 W·헤어드라이어 1300 W·세탁기 500 W는 교과서 값, 나머지는 흔한 제품의 예시값이에요. 실제 제품마다 다르고 작동 상태에 따라 달라져요. 측정기는 작동하는 동안 일정한 값을 보여 주도록 단순화했어요.</li>
     <li>에너지 갈래의 굵기는 ‘주로 전환’과 ‘함께 전환’만 구분해요. 에너지 양의 비율을 나타내지 않아요.</li>
-    <li>대기 전력(0.3~1.5 W)은 예시값이에요. 기계식 스위치 기구는 0 W로 두었어요.</li>
+    <li>대기 전력(0.3~1.5 W)은 예시값이에요. 표시창·리모컨·충전 회로가 있는 기구(선풍기·텔레비전·휴대 전화 충전기·세탁기·스피커·전기밥솥)는 전원을 꺼도 대기 전력이 흐르고, 이 전기 에너지는 대부분 열에너지로 전환돼요(실험대의 옅은 열 기둥). 기계식 스위치로 회로를 끊는 기구는 0 W로 두었어요.</li>
     <li>전기 주전자: 25 ℃ 물 1 L를 100 ℃까지 데우는 데 필요한 열에너지를 약 ${fmtInt(KETTLE.Q)} J(물 1 kg × 4186 J/(kg·℃) × 75 ℃)로 계산했고, 교과서 상황처럼 두 주전자가 ${KETTLE.tBoil}초에 함께 끓기 시작하도록 두었어요. 끓기 시작하면 자동으로 꺼져요.</li>
     <li>조명: 세 전등의 밝기를 800 lm으로 같게 두고, 빛에너지를 1초에 약 3 J로 가정한 교육용 모형이에요.</li>
     <li>요금·CO₂: 교과서 냉장고 표(1등급 30.8 kWh/월 · 59,000원/년 · 18.2 g/시간)에서 구한 1 kWh ≈ ${RATE.won}원, 약 ${RATE.co2} kg으로 계산했어요. 누진제·기본요금은 넣지 않았어요.</li>
-    <li>기구 그림은 한 대씩 크게 보이도록 크기를 맞췄어요. 실제 크기는 장면 아래에 적었어요.</li></ul>
+    <li>기구 그림은 한 대씩 크게 보이도록 크기를 맞췄어요. 실제 크기는 장면 아래에 적었어요.</li>
+    <li>계산 연습: 첫 값은 이 실험실 명판 값, 나머지는 흔한 제품의 예시 소비 전력이에요. 전기 요금은 1 kWh ≈ ${RATE.won}원(교육용 근사)으로 계산해요.</li>
+    <li>등급 라벨: 냉장고 두 세트는 교과서 표 값이고, 김치냉장고·텔레비전·공기청정기는 이 실험실의 환산(1 kWh ≈ ${RATE.won}원, ${RATE.co2} kg/kWh)에 맞춘 교육용 예시값이에요. 실제 제품 라벨과 다를 수 있어요.</li></ul>
     <h3>기록과 개인정보</h3>
     <p>정보는 서버로 전송되지 않아요. 기본적으로 현재 브라우저 세션에서만 사용하며, ‘이 기기에서 이어하기’를 선택한 경우에만 이 기기에 저장됩니다. 테마 설정만 이 기기에 남아요.</p>
     <div class="dialog-actions start"><button class="btn" id="swapStudent">${icon('reset')}<span>학생 바꾸기</span></button><button class="btn ghost" id="wipeAll">${icon('trash')}<span>모든 데이터 초기화</span></button></div>
@@ -2790,6 +2879,8 @@ function learnSummary() {
   if (Object.values(revisions).some(v => v)) items.push('다시 쓴 답안');
   if (Object.keys(locks).length) items.push('모범 답안 잠금');
   if (Object.keys(hints).length) items.push('힌트 기록');
+  if (drillHasData()) items.push('계산 연습 기록');
+  if (labelHasData()) items.push('등급 라벨 분석');
   if (basePlan) items.push('처음 계획');
   items.push('우리 집 계획');
   return items;
@@ -2802,7 +2893,7 @@ function confirmWipe(swap) {
     onOpen: () => {
       $('#wipeYes').onclick = () => {
         LEARN_KEYS.forEach(k => store.del(k)); store.del('student');
-        records = []; calc = {}; answers = {}; revisions = {}; locks = {}; hints = {}; seen = {}; plan = defaultPlan(); basePlan = null;
+        records = []; calc = {}; answers = {}; revisions = {}; locks = {}; hints = {}; seen = {}; plan = defaultPlan(); basePlan = null; drill = freshDrill(); dq = null; labelSt = freshLabel();
         student = { sid: '', name: '', asked: false, keep: false };
         Object.keys(minis).forEach(k => delete minis[k]);
         closeModal(); go('conv');
@@ -2845,6 +2936,7 @@ function restoreKept(sid) {
     const b = JSON.parse(localStorage.getItem(KEY('p-' + sid)) || '{}');
     LEARN_KEYS.forEach(k => { if (b[k] != null) sessionStorage.setItem(KEY(k), JSON.stringify(b[k])); });
     records = store.get('records', []); calc = store.get('calc', {}); plan = store.get('plan', null) || defaultPlan(); basePlan = store.get('base', null);
+    drill = Object.assign(freshDrill(), store.get('drill', null) || {}); dq = null; labelSt = Object.assign(freshLabel(), store.get('label', null) || {});
     answers = qOnly(store.get('answers', {})); revisions = qOnly(store.get('revisions', {})); locks = qOnly(store.get('locks', {})); hints = qOnly(store.get('hints', {})); seen = qOnly(store.get('seen', {}));
     go(S.screen); toast('지난 기록을 불러왔어요.');
   } catch (e) { toast('지난 기록을 불러오지 못했어요. 새로 시작해도 실험은 그대로 할 수 있어요.', { error: true }); }
@@ -2950,12 +3042,12 @@ async function capture() {
 
 /* ═══════════ 학습 리포트 · 빈 학습지 (인쇄) ═══════════ */
 function openReport() {
-  const hasRec = records.length || Object.keys(calc).length;
+  const hasRec = records.length || Object.keys(calc).length || drillHasData() || labelHasData();
   const hasAns = QUESTIONS.some(q => answers[q.id] || revisions[q.id]);
   openModal('학습 리포트', `
     <p class="help">${student.sid ? `학번 ${escapeHtml(student.sid)} · 이름 ${escapeHtml(student.name)} <button class="linkbtn" id="rpChange">변경</button>` : '인쇄할 때 학번과 이름을 한 번 물어봐요.'}</p>
     <fieldset class="opts"><legend>학습 리포트에 넣을 내용</legend>
-      ${hasRec ? '<label class="check"><input type="checkbox" id="opRec" checked> 측정 기록표 · 소비 전력 계산 · 우리 집 계획</label>' : ''}
+      ${hasRec ? '<label class="check"><input type="checkbox" id="opRec" checked> 측정 기록표 · 소비 전력 계산 · 우리 집 계획 · 계산 연습 · 등급 라벨 분석</label>' : ''}
       <label class="check"><input type="checkbox" id="opAns" checked ${hasAns ? '' : 'disabled'}> 탐구 질문 답안${hasAns ? '' : ' (아직 쓴 답안이 없어요)'}</label>
       <label class="check"><input type="checkbox" id="opModel"> 모범 답안 함께 인쇄</label></fieldset>
     <div class="dialog-actions"><button class="btn primary" id="rpPrint">${icon('report')}<span>학습 리포트 인쇄(PDF로 저장)</span></button></div>
@@ -2989,6 +3081,7 @@ function reportHtml(o) {
     const T = houseTotals(plan);
     h += `<section class="pv-sec"><h2>3. 우리 집 하루 전력량 계획</h2><p>냉장고 ${plan.grade}등급 · 전등 ${LAMP_BY_ID[plan.lamp].name} 4개 · 하루 ${fmtInt(T.whDay)} Wh · 한 달 ${fmtFix(T.kwhMonth, 1)} kWh · 요금 약 ${fmtInt(Math.round(T.won / 100) * 100)}원 · 대기 전력 하루 ${fmtFix(T.standbyDay, 1)} Wh</p>
       <table class="pv-t"><thead><tr><th>기구</th><th>하루 사용 시간</th><th>플러그</th><th>하루 전력량</th></tr></thead><tbody>${T.rows.map(r => `<tr><td>${houseRowName(r.row)}</td><td>${fmtMin(r.minutes)}</td><td>${r.row.ref && APP_BY_ID[r.row.ref].standby ? (plan.rows[r.row.id].plug ? '꽂아 둠' : '뽑아 둠') : '-'}</td><td class="num">${fmtInt(r.total)} Wh</td></tr>`).join('')}</tbody></table></section>`;
+    h += reportV26();
   }
   if (o.ans) {
     h += `<section class="pv-sec"><h2>탐구 질문</h2>`;
@@ -3032,6 +3125,7 @@ function bind() {
     const t = e.target.closest('button, [data-act], summary, a');
     if (!t) return;
     const d = t.dataset;
+    if (v26Click(t, d)) return;
     if (d.go) { go(d.go); return; }
     if (t.hasAttribute('data-close')) { closeModal(); return; }
     if (d.theory) { openTheory(d.theory); return; }
@@ -3090,6 +3184,7 @@ function bind() {
   });
   document.addEventListener('input', e => {
     const t = e.target;
+    if (v26Input(t)) return;
     if (t.id === 'lampH') { lamps.hours = +t.value; setT($('#lampHo'), `${fmtFix(lamps.hours, 1)}시간`); cur.scene.update(); $$('[data-wh]').forEach(td => { td.textContent = `${fmtInt(lampWh(LAMP_BY_ID[td.dataset.wh], lamps.hours))} Wh`; }); return; }
     if (t.id === 'labY') { labels.years = +t.value; setT($('#labYo'), `${labels.years}년`); setT($('#labYs'), `${labels.years}년`); cur.scene.update(); $('#labCmp').innerHTML = labCmpRows(gradeTotals(1, labels.years), gradeTotals(5, labels.years)); setStatus(effStatus()); return; }
     if (t.dataset.mini && t.type === 'range') { miniAct(t.closest('.mini').dataset.q, t.dataset.mini, t.value, t); return; }
@@ -3107,6 +3202,7 @@ function bind() {
   });
   document.addEventListener('keydown', e => {
     const t = e.target;
+    if (v26Key(e, t)) return;
     if (t.closest && t.closest('.hit') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); t.closest('.hit').dataset.act === 'plug' ? convPlug() : convPower(); return; }
     if (t.matches && t.matches('.cstep input') && e.key === 'Enter') { e.preventDefault(); checkStep(t.id.slice(3), t.value); return; }
     if (e.ctrlKey || e.metaKey || e.altKey) return;
@@ -3909,7 +4005,9 @@ kettleArt=function(p,o={}) {
  return {svg:s,x0:m.x0,x1:m.x1,y0:m.y0,plug:m.point(...a.plug),core:m.point(...a.core)};
 };
 ART.kettle=p=>kettleArt(p);
-function propWarm(q,st,t,dt,fx) {fx.warm=approach(fx.warm||0,st.on?1:0,dt,st.on?4:7);plumeFx(q('heat'),t,fx.warm>.15,fx.warm*.65);}
+/* v2.6: 대기 전력도 대부분 열에너지로 전환된다 — 전원을 끄고 플러그를 꽂아 둔 동안 옅은 열 기둥을 남긴다 */
+const SB_WARM = 0.75;
+function propWarm(q,st,t,dt,fx) {const tg=st.on?1:(st.standby?SB_WARM:0);fx.warm=approach(fx.warm||0,tg,dt,st.on?4:(st.standby?2.5:7));plumeFx(q('heat'),t,fx.warm>.15,fx.warm*.65);}
 for(const id of Object.keys(PROP_ANCHORS)) if(id!=='kettle') FX[id]=function(q,st,t,dt,fx){
  const m=propMap(id),a=PROP_ANCHORS[id];
  fx.lv=approach(fx.lv||0,st.on?1:0,dt,id==='fan'||id==='washer'?.65:.3);
@@ -3950,6 +4048,801 @@ meterArt=function(p,x,y,k=1,plate=true){
  s+=`<rect x="${lcdX+1}" y="${lcdY+1}" width="${lcdW-2}" height="${lcdH-2}" rx="3" fill="#c3ddd0"/><text id="${p}mlcd" x="${lcdX+lcdW-4}" y="${lcdY+lcdH*.63}" text-anchor="end" fill="#183a33" font-size="14" font-family="ui-monospace,monospace" font-weight="700">0.0</text><text x="${lcdX+lcdW-4}" y="${lcdY+lcdH-3}" text-anchor="end" fill="#183a33" font-size="6">W</text></g>`;
  return {svg:s,sock:[x+39*k,y+(.678*1000-b[1])/bh*132*k],w:78*k,h:132*k};
 };
+
+/* ═════════════════ v2.6 — 소비 전력·전력량 계산 연습 · 에너지 소비 효율 등급 라벨 분석 ═════════════════ */
+ICONS.navDrill = '<rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 6.2h7v3.3h-7Z"/><path d="M8.6 13.6h.01M12 13.6h.01M15.4 13.6h.01M8.6 17.6h.01M12 17.6h.01M15.4 17.6h.01"/>';
+ICONS.navLabel = '<rect x="4.5" y="2.5" width="15" height="19" rx="2"/><path d="M8 7h3M8 10.5h5M8 14h7M8 17.5h8.5"/>';
+SCREENS.splice(SCREENS.findIndex(s => s.id === 'calc') + 1, 0, { id: 'drill', label: '계산 연습', short: '연습', icon: 'navDrill', title: '소비 전력·전력량 계산 연습', goal: '명판의 소비 전력과 사용 시간으로 전기 에너지(J)와 전력량(Wh·kWh)을 구해요' });
+SCREENS.splice(SCREENS.findIndex(s => s.id === 'eff') + 1, 0, { id: 'label', label: '등급 라벨', short: '라벨', icon: 'navLabel', title: '에너지 소비 효율 등급 라벨 분석', goal: '라벨의 ① 효율 등급 ② 월간 소비 전력량 ③ CO₂ 배출량 ④ 연간 에너지 비용을 읽고 두 제품을 비교해요' });
+SCREENS.forEach(s => { SCREEN_BY[s.id] = s; });
+LEARN_KEYS.push('drill', 'label');
+THEORY.find(t => t.id === 'wh').pts.push('분은 60으로 나눠 시간(h)으로 바꿔 계산해요. 15분 = 0.25 h, 30분 = 0.5 h, 45분 = 0.75 h', '소비 전력이 큰 기구도 짧게 쓰면 전력량이 작을 수 있어요. 전력량은 소비 전력과 사용 시간을 함께 따져요.');
+THEORY.splice(THEORY.findIndex(t => t.id === 'eff') + 1, 0, {
+  id: 'label', title: '에너지 소비 효율 등급 라벨 읽기',
+  def: '전기 기구에 붙은 <b>에너지 소비 효율 등급 라벨</b>에서 그 제품이 전기 에너지를 얼마나 효율적으로 쓰는지 읽을 수 있어요.',
+  pts: ['① <b>효율 등급</b> — 1~5등급. 숫자가 작을수록(1등급에 가까울수록) 효율이 높아요.', '② <b>월간 소비 전력량</b> — 한 달 동안 사용하는 전력량(kWh/월)이에요.', '③ <b>CO₂ 배출량</b> — 이 전기 에너지를 만들 때 1시간 동안 나오는 이산화 탄소의 양(g/시간)이에요.', '④ <b>연간 에너지 비용</b> — 1년 동안 드는 전기 요금(원/년)이에요.', '크기·성능이 같은 제품끼리 비교해요. 1년 차이 = 한 달 차이 × 12, 10년 차이 = 1년 차이 × 10'],
+  link: '‘등급 라벨’ 화면에서 두 제품의 라벨을 읽고 비교·분석해 보세요.',
+});
+
+/* ── 작은 도구 ── */
+const v26pick = a => a[Math.floor(Math.random() * a.length)];
+function parseNum(v) { const s = String(v == null ? '' : v).replace(/[,\s]/g, '').replace(/[^\d.\-]/g, ''); if (!s || s === '.' || s === '-') return NaN; return parseFloat(s); }
+function fmtD(n) { return Number(n).toLocaleString('ko-KR', { maximumFractionDigits: 2 }); }
+function fmt1(n) { return Number(n).toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+function v26gcd(a, b) { return b ? v26gcd(b, a % b) : a; }
+/* 분 → 시간(h): 소수로 딱 떨어지면 소수, 아니면 기약분수 */
+function hStr(min) { const h = min / 60; if (Math.abs(h * 100 - Math.round(h * 100)) < 1e-9) return fmtD(h); const g = v26gcd(min, 60); return `${min / g}/${60 / g}`; }
+function eqTxt(s) { return escapeHtml(s).replace(/\[\[(.+?)\]\]/g, '<tspan class="ok">$1</tspan>').replace(/\{\{(.+?)\}\}/g, '<tspan class="ask">$1</tspan>'); }
+function eqPlain(a) { return [].concat(a).map(s => s.replace(/\[\[|\]\]|\{\{|\}\}/g, '')).join(' / '); }
+function v26strip(s) { return String(s).replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' '); }
+
+/* ═════════════════ ⑥ 계산 연습 ═════════════════ */
+const DRILL_LV = [
+  { id: 'j', name: '1초 에너지', sub: '소비 전력 W ↔ J' },
+  { id: 'wh', name: '전력량', sub: 'W × 사용 시간(h)' },
+  { id: 'min', name: '분 → 시간', sub: '15분 = 0.25 h' },
+  { id: 'kwh', name: 'kWh·거꾸로', sub: 'Wh ↔ kWh, W·h 구하기' },
+  { id: 'cmp', name: '비교·한 달', sub: '전력량 비교, 요금' },
+  { id: 'mix', name: '섞어서 도전', sub: '모든 유형' },
+];
+const DRILL_LV_BY = Object.fromEntries(DRILL_LV.map(l => [l.id, l]));
+const DKINDS = { j: ['j1', 'jE', 'jE', 'jP', 'jP'], wh: ['wh1'], min: ['min1', 'min1', 'min1', 'min2'], kwh: ['k1', 'k2', 'k2', 'k3', 'r1', 'r1', 'r2'], cmp: ['c1', 'c1', 'c2', 'c2', 'c3'] };
+const DKIND_NAME = { j1: '1초 동안의 전기 에너지', jE: '사용한 전기 에너지', jP: '소비 전력 구하기', wh1: '전력량 구하기', min1: '분을 시간으로 바꿔 전력량', min2: '분을 시간으로', k1: 'Wh → kWh', k2: '전력량을 kWh로', k3: 'kWh → Wh', r1: '소비 전력 거꾸로 구하기', r2: '사용 시간 거꾸로 구하기', c1: '전력량 비교', c2: '한 달 전력량', c3: '한 달 전기 요금' };
+/* 문제에 쓰는 소비 전력 — 첫 값이 이 실험실 명판 값, 나머지는 흔한 제품의 예시값 */
+const DRILL_P = { fan: [40, 30, 50, 60], tv: [100, 120, 150, 80], kettle: [1500, 1200, 1600, 1800], charger: [15, 10, 20, 25], washer: [500, 400, 600, 300], led: [9, 10, 12, 8], dryer: [1300, 1200, 1500, 1800], speaker: [20, 30, 40, 60], vacuum: [1800, 1500, 1200, 1000], heater: [1000, 2000, 1200, 800], blender: [400, 300, 600, 500], rice: [800, 1000, 600, 1200] };
+const DRILL_H = { fan: [2, 3, 4, 5, 6, 8], tv: [1, 2, 3, 4, 5], led: [2, 3, 4, 5, 6, 8], speaker: [1, 2, 3, 4], charger: [1, 2, 3, 4], washer: [1, 2], rice: [1, 2], heater: [1, 2, 3, 4, 5] };
+const DRILL_M = { kettle: [3, 5, 6, 10, 12], dryer: [6, 10, 12, 15, 20], vacuum: [10, 15, 20, 30], blender: [3, 5, 6, 10], washer: [30, 45, 90], rice: [30, 45, 90], tv: [30, 45, 90], heater: [15, 30, 45, 90], fan: [30, 45, 90], speaker: [30, 45], charger: [30, 45, 90] };
+const DRILL_C3 = { tv: [9, 12, 4.5], fan: [6, 4.5, 7.2], heater: [30, 45, 60], led: [1.5, 2.4, 3], rice: [24, 30, 18], washer: [15, 12, 9] };
+const DRILL_NAME = { charger: '휴대 전화 충전기' };
+function dApp(ids) { const id = v26pick(ids); return { id, name: DRILL_NAME[id] || APP_BY_ID[id].name, P: v26pick(DRILL_P[id]) }; }
+function blocks(o) { return Object.assign({ type: 'blocks', word: '시간', per0: '', per1: '', frac0: '?', frac1: '', total0: '', total1: '' }, o); }
+
+function makeDrill(kind) {
+  let a, P, t, h, min, E, Wh, kWh, hs;
+  const HR = '전력량(Wh) = 소비 전력(W) × 사용 시간(h)';
+  switch (kind) {
+    case 'j1':
+      a = dApp(Object.keys(DRILL_P)); P = a.P;
+      return { kind, app: a, ans: P, unit: 'J', want: ['1초 동안 쓰는 전기 에너지', 'J', `${fmtD(P)} J`],
+        q: `소비 전력이 <b>${P} W</b>인 ${josa(a.name, '은/는')} <b>1초 동안</b> 전기 에너지를 몇 J 사용할까요?`,
+        given: [['소비 전력', `${P} W`], ['시간', '1초']],
+        hint: '소비 전력은 1초 동안 사용하는 전기 에너지의 양이에요. 1 W = 1초에 1 J',
+        eqW: '소비 전력(W) = 1초 동안 사용하는 전기 에너지(J)', eqH: `${P} W → 1초 동안 {{? J}}`, eq1: `${P} W → 1초 동안 [[${fmtD(P)} J]]`,
+        steps: [`소비 전력 ${P} W는 1초 동안 전기 에너지를 <b>${fmtD(P)} J</b> 사용한다는 뜻이에요.`],
+        traps: [[P * 60, '1분이 아니라 1초 동안의 값이에요.'], [P * 3600, '1시간이 아니라 1초 동안의 값이에요.']],
+        vis: blocks({ n: 1, word: '초', title: '한 칸 = 1초 동안 들어가는 전기 에너지', per0: '? J', per1: `+${fmtD(P)} J` }) };
+    case 'jE':
+      a = dApp(Object.keys(DRILL_P)); P = a.P; t = v26pick([2, 3, 4, 5, 10, 20, 30, 60]); E = P * t;
+      return { kind, app: a, ans: E, unit: 'J', want: ['사용한 전기 에너지', 'J', `${fmtD(E)} J`],
+        q: `소비 전력이 <b>${P} W</b>인 ${josa(a.name, '을/를')} <b>${t}초 동안</b> 사용했어요. 사용한 전기 에너지는 몇 J일까요?`,
+        given: [['소비 전력', `${P} W`], ['사용 시간', `${t}초`]],
+        hint: `1초에 ${fmtD(P)} J씩 ${t}초 동안 들어가요. 소비 전력 × 시간(초)`,
+        eqW: '사용한 전기 에너지(J) = 소비 전력(W) × 시간(초)', eqH: `${P} W × ${t} s = {{? J}}`, eq1: `${P} W × ${t} s = [[${fmtD(E)} J]]`,
+        steps: [`1초에 ${fmtD(P)} J`, `${P} W × ${t} s = <b>${fmtD(E)} J</b>`],
+        traps: [[P, '1초 동안의 값이에요. 걸린 시간(초)만큼 곱해요.']],
+        vis: blocks({ n: t, word: '초', title: '한 칸 = 1초 동안 들어가는 전기 에너지', per0: `+${fmtD(P)} J`, per1: `+${fmtD(P)} J`, total0: '? J', total1: `${fmtD(E)} J` }) };
+    case 'jP':
+      a = dApp(Object.keys(DRILL_P)); P = a.P; t = v26pick([2, 3, 4, 5, 10]); E = P * t;
+      return { kind, app: a, ans: P, unit: 'W', plateAsk: true, want: ['소비 전력', 'W', `${P} W`],
+        q: `${josa(a.name, '이/가')} <b>${t}초 동안</b> 전기 에너지를 <b>${fmtD(E)} J</b> 사용했어요. 이 기구의 소비 전력은 몇 W일까요?`,
+        given: [['사용 시간', `${t}초`], ['사용한 전기 에너지', `${fmtD(E)} J`]],
+        hint: '소비 전력은 1초 동안 사용한 전기 에너지예요. 전체 전기 에너지 ÷ 시간(초)',
+        eqW: '소비 전력(W) = 사용한 전기 에너지(J) ÷ 시간(초)', eqH: `${fmtD(E)} J ÷ ${t} s = {{? W}}`, eq1: `${fmtD(E)} J ÷ ${t} s = [[${P} W]]`,
+        steps: [`${fmtD(E)} J ÷ ${t} s = 1초에 ${fmtD(P)} J`, `1초에 ${fmtD(P)} J → 소비 전력 <b>${P} W</b>`],
+        traps: [[E, '전체 전기 에너지예요. 1초 동안의 값을 구하려면 시간(초)으로 나눠요.'], [E * t, '곱하지 않고 나눠요.']],
+        vis: blocks({ n: t, word: '초', title: '한 칸 = 1초 동안 들어가는 전기 에너지', per0: '? J', per1: `+${fmtD(P)} J`, total0: `${fmtD(E)} J`, total1: `${fmtD(E)} J` }) };
+    case 'wh1':
+      a = dApp(Object.keys(DRILL_H)); P = a.P; h = v26pick(DRILL_H[a.id]); Wh = P * h;
+      return { kind, app: a, ans: Wh, unit: 'Wh', want: ['전력량', 'Wh', `${fmtD(Wh)} Wh`],
+        q: `소비 전력이 <b>${P} W</b>인 ${josa(a.name, '을/를')} <b>${h}시간</b> 사용했어요. 전력량은 몇 Wh일까요?`,
+        given: [['소비 전력', `${P} W`], ['사용 시간', `${h}시간`]],
+        hint: '전력량(Wh) = 소비 전력(W) × 사용 시간(h)',
+        eqW: HR, eqH: `${P} W × ${h} h = {{? Wh}}`, eq1: `${P} W × ${h} h = [[${fmtD(Wh)} Wh]]`,
+        steps: [`${P} W × ${h} h = <b>${fmtD(Wh)} Wh</b>`],
+        traps: [[Wh * 3600, '시간을 초로 바꾸지 않아요. Wh는 W × 시간(h)이에요.'], [Wh / 1000, 'kWh가 아니라 Wh로 답해요.'], [P, '1시간 동안의 값이에요. 사용 시간만큼 곱해요.']],
+        vis: blocks({ n: h, title: '한 칸 = 1시간 동안 사용한 전력량', per0: `${fmtD(P)} Wh`, per1: `${fmtD(P)} Wh`, total0: '? Wh', total1: `${fmtD(Wh)} Wh` }) };
+    case 'min1':
+      for (let i = 0; i < 60; i++) { a = dApp(Object.keys(DRILL_M)); min = v26pick(DRILL_M[a.id]); if ((a.P * min) % 6 === 0) break; }
+      if ((a.P * min) % 6 !== 0) { a = { id: 'kettle', name: APP_BY_ID.kettle.name, P: 1500 }; min = 6; }
+      P = a.P; Wh = P * min / 60; hs = hStr(min);
+      return { kind, app: a, ans: Wh, unit: 'Wh', tol: 0.051, want: ['전력량', 'Wh', `${fmtD(Wh)} Wh`],
+        q: `소비 전력이 <b>${P} W</b>인 ${josa(a.name, '을/를')} <b>${min}분</b> 사용했어요. 전력량은 몇 Wh일까요?`,
+        given: [['소비 전력', `${P} W`], ['사용 시간', `${min}분`]],
+        hint: `먼저 분을 시간으로 바꿔요. ${min}분 = ${min} ÷ 60 시간`,
+        eqW: HR, eqH: `${P} W × ${min}분(= {{? h}}) = {{? Wh}}`, eq1: `${P} W × [[${hs} h]] = [[${fmtD(Wh)} Wh]]`,
+        steps: [`${min}분 = ${min} ÷ 60 = ${hs} h`, `${P} W × ${hs} h = <b>${fmtD(Wh)} Wh</b>`],
+        traps: [[P * min, '분을 그대로 곱했어요. 먼저 60으로 나눠 시간(h)으로 바꿔요.'], [P * min * 60, '초로 바꾸지 않아요. 분 ÷ 60 = 시간(h)']],
+        vis: blocks({ n: min / 60, title: '한 칸 = 1시간(60분) 동안 사용한 전력량', per0: `${fmtD(P)} Wh`, per1: `${fmtD(P)} Wh`, frac1: `${fmtD(P * ((min % 60) / 60))} Wh`, fracCap: `${min % 60}분`, total0: '? Wh', total1: `${fmtD(Wh)} Wh` }) };
+    case 'min2':
+      min = v26pick([6, 12, 15, 30, 45, 90, 18, 24, 36, 48]); h = min / 60;
+      return { kind, left: 'clock', min, ans: h, unit: 'h', tol: 0.001, want: ['시간', 'h', `${fmtD(h)} h`],
+        q: `<b>${min}분</b>은 몇 시간(h)일까요? 소수로 나타내 보세요.`,
+        given: [['시간', `${min}분`], ['1시간', '60분']],
+        hint: '1시간 = 60분이에요. 분 ÷ 60',
+        eqW: '시간(h) = 분 ÷ 60', eqH: `${min} ÷ 60 = {{? h}}`, eq1: `${min} ÷ 60 = [[${fmtD(h)} h]]`,
+        steps: [`${min}분 ÷ 60 = <b>${fmtD(h)} h</b>`],
+        traps: [[min / 100, '1시간은 100분이 아니라 60분이에요.'], [min * 60, '곱하지 않고 60으로 나눠요.']],
+        vis: blocks({ n: h, title: '한 칸 = 1시간 = 60분', per0: '60분', per1: '60분', frac0: '?', frac1: `${min % 60}분`, fracCap: `${min % 60}분`, total0: '? h', total1: `${fmtD(h)} h` }) };
+    case 'k1':
+      Wh = v26pick([1500, 2500, 3000, 4500, 800, 1200, 600, 250, 7500, 12000, 1800, 350]); kWh = Wh / 1000;
+      return { kind, left: 'unit', ans: kWh, unit: 'kWh', tol: 0.0005, want: ['전력량', 'kWh', `${fmtD(kWh)} kWh`],
+        q: `전력량 <b>${fmtD(Wh)} Wh</b>는 몇 kWh일까요?`,
+        given: [['전력량', `${fmtD(Wh)} Wh`], ['단위', '1 kWh = 1000 Wh']],
+        hint: '1 kWh = 1000 Wh예요. Wh ÷ 1000',
+        eqW: '전력량(kWh) = 전력량(Wh) ÷ 1000', eqH: `${fmtD(Wh)} Wh ÷ 1000 = {{? kWh}}`, eq1: `${fmtD(Wh)} Wh ÷ 1000 = [[${fmtD(kWh)} kWh]]`,
+        steps: [`${fmtD(Wh)} Wh ÷ 1000 = <b>${fmtD(kWh)} kWh</b>`],
+        traps: [[Wh * 1000, '1000을 곱하지 않고 나눠요. kWh는 Wh보다 큰 단위예요.'], [Wh / 100, '1 kWh는 1000 Wh예요.']],
+        vis: blocks({ n: kWh, word: ' kWh', title: '한 칸 = 1 kWh = 1000 Wh', per0: '1000 Wh', per1: '1000 Wh', frac1: `${fmtD(Wh % 1000)} Wh`, fracCap: `${fmtD(Wh % 1000)} Wh`, total0: '? kWh', total1: `${fmtD(kWh)} kWh` }) };
+    case 'k3':
+      kWh = v26pick([0.5, 1.2, 2, 2.5, 3.6, 0.8, 1.5, 4, 0.25]); Wh = Math.round(kWh * 1000);
+      return { kind, left: 'unit', ans: Wh, unit: 'Wh', want: ['전력량', 'Wh', `${fmtD(Wh)} Wh`],
+        q: `<b>${fmtD(kWh)} kWh</b>는 몇 Wh일까요?`,
+        given: [['전력량', `${fmtD(kWh)} kWh`], ['단위', '1 kWh = 1000 Wh']],
+        hint: '1 kWh = 1000 Wh예요. kWh × 1000',
+        eqW: '전력량(Wh) = 전력량(kWh) × 1000', eqH: `${fmtD(kWh)} kWh × 1000 = {{? Wh}}`, eq1: `${fmtD(kWh)} kWh × 1000 = [[${fmtD(Wh)} Wh]]`,
+        steps: [`${fmtD(kWh)} kWh × 1000 = <b>${fmtD(Wh)} Wh</b>`],
+        traps: [[kWh / 1000, '나누지 않고 1000을 곱해요. Wh는 kWh보다 작은 단위예요.'], [kWh * 100, '1 kWh는 1000 Wh예요.']],
+        vis: blocks({ n: kWh, word: ' kWh', title: '한 칸 = 1 kWh = 1000 Wh', per0: '1000 Wh', per1: '1000 Wh', frac1: `${fmtD(Wh % 1000)} Wh`, fracCap: `${fmtD(kWh % 1)} kWh`, total0: '? Wh', total1: `${fmtD(Wh)} Wh` }) };
+    case 'k2':
+      for (let i = 0; i < 40; i++) { a = dApp(['heater', 'washer', 'tv', 'fan', 'rice']); h = v26pick(DRILL_H[a.id]); if (a.P * h >= 100) break; }
+      P = a.P; Wh = P * h; kWh = Wh / 1000;
+      return { kind, app: a, ans: kWh, unit: 'kWh', tol: 0.0005, want: ['전력량', 'kWh', `${fmtD(kWh)} kWh`],
+        q: `소비 전력이 <b>${P} W</b>인 ${josa(a.name, '을/를')} <b>${h}시간</b> 사용했어요. 전력량은 몇 <b>kWh</b>일까요?`,
+        given: [['소비 전력', `${P} W`], ['사용 시간', `${h}시간`]],
+        hint: '먼저 Wh로 구한 뒤 1000으로 나눠요(1 kWh = 1000 Wh).',
+        eqW: '전력량(kWh) = 소비 전력(W) × 사용 시간(h) ÷ 1000', eqH: `${P} W × ${h} h = {{? Wh}} = {{? kWh}}`, eq1: `${P} W × ${h} h = [[${fmtD(Wh)} Wh]] = [[${fmtD(kWh)} kWh]]`,
+        steps: [`${P} W × ${h} h = ${fmtD(Wh)} Wh`, `${fmtD(Wh)} Wh ÷ 1000 = <b>${fmtD(kWh)} kWh</b>`],
+        traps: [[Wh, 'Wh로 구했어요. 1000으로 나눠 kWh로 바꿔요.']],
+        vis: blocks({ n: h, title: '한 칸 = 1시간 동안 사용한 전력량', per0: `${fmtD(P)} Wh`, per1: `${fmtD(P)} Wh`, total0: '? kWh', total1: `${fmtD(Wh)} Wh = ${fmtD(kWh)} kWh` }) };
+    case 'r1':
+      a = dApp(Object.keys(DRILL_H)); P = a.P; h = v26pick(DRILL_H[a.id].filter(x => x >= 2)); Wh = P * h;
+      return { kind, app: a, ans: P, unit: 'W', plateAsk: true, want: ['소비 전력', 'W', `${P} W`],
+        q: `${josa(a.name, '을/를')} <b>${h}시간</b> 사용했더니 전력량이 <b>${fmtD(Wh)} Wh</b>였어요. 이 기구의 소비 전력은 몇 W일까요?`,
+        given: [['사용 시간', `${h}시간`], ['전력량', `${fmtD(Wh)} Wh`]],
+        hint: '전력량 = 소비 전력 × 시간이므로, 소비 전력 = 전력량 ÷ 시간',
+        eqW: '소비 전력(W) = 전력량(Wh) ÷ 사용 시간(h)', eqH: `${fmtD(Wh)} Wh ÷ ${h} h = {{? W}}`, eq1: `${fmtD(Wh)} Wh ÷ ${h} h = [[${P} W]]`,
+        steps: [`${fmtD(Wh)} Wh ÷ ${h} h = <b>${P} W</b>`],
+        traps: [[Wh * h, '곱하지 않고 나눠요. 소비 전력 = 전력량 ÷ 시간']],
+        vis: blocks({ n: h, title: '한 칸 = 1시간 동안 사용한 전력량', per0: '? Wh', per1: `${fmtD(P)} Wh`, total0: `${fmtD(Wh)} Wh`, total1: `${fmtD(Wh)} Wh` }) };
+    case 'r2':
+      a = dApp(Object.keys(DRILL_H)); P = a.P; h = v26pick(DRILL_H[a.id].filter(x => x >= 2)); Wh = P * h;
+      return { kind, app: a, ans: h, unit: 'h', tol: 0.001, want: ['사용 시간', 'h', `${h} h`],
+        q: `소비 전력이 <b>${P} W</b>인 ${josa(a.name, '을/를')} 사용했더니 전력량이 <b>${fmtD(Wh)} Wh</b>였어요. 몇 시간 사용했을까요?`,
+        given: [['소비 전력', `${P} W`], ['전력량', `${fmtD(Wh)} Wh`]],
+        hint: '사용 시간 = 전력량 ÷ 소비 전력',
+        eqW: '사용 시간(h) = 전력량(Wh) ÷ 소비 전력(W)', eqH: `${fmtD(Wh)} Wh ÷ ${P} W = {{? h}}`, eq1: `${fmtD(Wh)} Wh ÷ ${P} W = [[${h} h]]`,
+        steps: [`${fmtD(Wh)} Wh ÷ ${P} W = <b>${h} h</b>`],
+        traps: [[Wh * P, '곱하지 않고 나눠요. 사용 시간 = 전력량 ÷ 소비 전력']],
+        vis: blocks({ n: h, nAsk: true, title: '한 칸 = 1시간 동안 사용한 전력량', per0: `${fmtD(P)} Wh`, per1: `${fmtD(P)} Wh`, total0: `${fmtD(Wh)} Wh`, total1: `${fmtD(Wh)} Wh` }) };
+    case 'c1': {
+      let A, B, mA, hB, wA = 0, wB = 0;
+      for (let i = 0; i < 80; i++) {
+        A = dApp(['kettle', 'dryer', 'vacuum', 'blender']); mA = v26pick(DRILL_M[A.id]);
+        if ((A.P * mA) % 6) continue;
+        B = dApp(['tv', 'fan', 'led', 'speaker', 'charger']); hB = v26pick(DRILL_H[B.id]);
+        wA = A.P * mA / 60; wB = B.P * hB;
+        if (Math.abs(wA - wB) / Math.max(wA, wB) >= 0.15) break;
+      }
+      let items = [Object.assign({}, A, { tm: `${mA}분`, hs: hStr(mA), wh: wA }), Object.assign({}, B, { tm: `${hB}시간`, hs: String(hB), wh: wB })];
+      if (Math.random() < 0.5) items.reverse();
+      const tg = ['㉠', '㉡'], big = items[0].wh > items[1].wh ? 0 : 1, hi = items[0].P > items[1].P ? 0 : 1;
+      const concl = big !== hi ? '소비 전력이 큰 기구도 짧게 쓰면 전력량이 더 작을 수 있어요.' : '소비 전력이 큰 기구를 그만큼 오래 써서 전력량도 더 커요.';
+      return { kind, ask: 'choice', items, ans: tg[big], options: items.map((it, i) => [tg[i], `${tg[i]} ${it.name}`]), unit: '',
+        q: `두 기구를 사용했어요. <b>전력량이 더 큰</b> 기구는 어느 것일까요?<br>㉠ ${items[0].name} ${items[0].P} W · ${items[0].tm} &nbsp;/&nbsp; ㉡ ${items[1].name} ${items[1].P} W · ${items[1].tm}`,
+        hint: '각 기구의 전력량(소비 전력 × 사용 시간)을 구해 비교해요. 분은 60으로 나눠 시간(h)으로 바꿔요.',
+        eqW: HR, eqH: items.map((it, i) => `${tg[i]} ${it.P} W × ${it.tm} = {{? Wh}}`), eq1: items.map((it, i) => `${tg[i]} ${it.P} W × ${it.hs} h = [[${fmtD(it.wh)} Wh]]`),
+        steps: items.map((it, i) => `${tg[i]} ${it.name}: ${it.P} W × ${it.hs} h = ${fmtD(it.wh)} Wh`).concat([`전력량이 더 큰 기구는 <b>${tg[big]} ${items[big].name}</b> — ${concl}`]),
+        vis: { type: 'cmp', items } };
+    }
+    case 'c2': {
+      a = dApp(['tv', 'fan', 'led', 'heater', 'charger', 'speaker']); P = a.P; h = v26pick(DRILL_H[a.id]);
+      const day = P * h, mon = day * 30; kWh = mon / 1000;
+      return { kind, app: a, ans: kWh, unit: 'kWh', tol: 0.0005, want: ['한 달 전력량', 'kWh', `${fmtD(kWh)} kWh`],
+        q: `소비 전력이 <b>${P} W</b>인 ${josa(a.name, '을/를')} <b>하루 ${h}시간씩 30일</b> 사용했어요. 한 달 전력량은 몇 kWh일까요?`,
+        given: [['소비 전력', `${P} W`], ['하루 사용 시간', `${h}시간`], ['사용 기간', '30일']],
+        hint: '하루 전력량(W × h)을 구하고 30을 곱한 뒤, 1000으로 나눠 kWh로 바꿔요.',
+        eqW: '한 달 전력량 = 소비 전력 × 하루 사용 시간 × 30일', eqH: `${P} W × ${h} h × 30 = {{? Wh}} = {{? kWh}}`, eq1: `${P} W × ${h} h × 30 = [[${fmtD(mon)} Wh]] = [[${fmtD(kWh)} kWh]]`,
+        steps: [`하루: ${P} W × ${h} h = ${fmtD(day)} Wh`, `30일: ${fmtD(day)} Wh × 30 = ${fmtD(mon)} Wh`, `${fmtD(mon)} Wh ÷ 1000 = <b>${fmtD(kWh)} kWh</b>`],
+        traps: [[day / 1000, '하루 전력량만 구했어요. 30일을 곱해요.'], [mon, 'Wh로 구했어요. 1000으로 나눠 kWh로 바꿔요.'], [day, '하루 전력량(Wh)이에요. 30일을 곱하고 kWh로 바꿔요.']],
+        vis: { type: 'days', per: `${fmtD(day)} Wh`, total0: '? kWh', total1: `${fmtD(mon)} Wh = ${fmtD(kWh)} kWh` } };
+    }
+    case 'c3': {
+      const id = v26pick(Object.keys(DRILL_C3)); a = { id, name: DRILL_NAME[id] || APP_BY_ID[id].name, P: APP_BY_ID[id].P };
+      kWh = v26pick(DRILL_C3[id]); const won = Math.round(kWh * RATE.won);
+      return { kind, app: a, plateHide: true, ans: won, unit: '원', want: ['한 달 전기 요금', '원', `${fmtD(won)}원`],
+        q: `${a.name}의 한 달 전력량이 <b>${fmtD(kWh)} kWh</b>예요. 1 kWh에 <b>${RATE.won}원</b>이라면 한 달 전기 요금은 몇 원일까요?`,
+        given: [['한 달 전력량', `${fmtD(kWh)} kWh`], ['1 kWh당 요금', `${RATE.won}원`]],
+        hint: '전기 요금 = 전력량(kWh) × 1 kWh당 요금',
+        eqW: '전기 요금(원) = 전력량(kWh) × 1 kWh당 요금(원)', eqH: `${fmtD(kWh)} kWh × ${RATE.won}원 = {{? 원}}`, eq1: `${fmtD(kWh)} kWh × ${RATE.won}원 = [[${fmtD(won)}원]]`,
+        steps: [`${fmtD(kWh)} kWh × ${RATE.won}원 = <b>${fmtD(won)}원</b>`, '실제 전기 요금은 누진제·기본요금 때문에 달라져요(교육용 근사).'],
+        traps: [[kWh * 1000 * RATE.won, 'kWh 그대로 곱해요. Wh로 바꾸지 않아요.']],
+        vis: blocks({ n: kWh, word: ' kWh', title: `한 칸 = 1 kWh의 요금 (${RATE.won}원)`, per0: `${RATE.won}원`, per1: `${RATE.won}원`, frac1: `${fmtD(Math.round((kWh % 1) * RATE.won))}원`, fracCap: `${fmtD(kWh % 1)} kWh`, total0: '? 원', total1: `${fmtD(won)}원` }) };
+    }
+  }
+  return makeDrill('wh1');
+}
+
+function freshDrill() { return { lv: 'j', stats: {}, streak: 0, best: 0, count: 0 }; }
+let drill = Object.assign(freshDrill(), store.get('drill', null) || {});
+let dq = null;
+function drillHasData() { return Object.values(drill.stats || {}).some(s => s && s.n); }
+function newDrill() {
+  const sel = DRILL_LV_BY[drill.lv] ? drill.lv : 'j', lvId = sel === 'mix' ? v26pick(['j', 'wh', 'min', 'kwh', 'cmp']) : sel;
+  let q, n = 0;
+  do { q = makeDrill(v26pick(DKINDS[lvId])); n++; } while (dq && q.q === dq.q && n < 10);
+  q.lv = lvId; q.sel = sel; q.tries = 0; q.no = (drill.count = (drill.count || 0) + 1);
+  q.ask = q.ask || 'num';
+  q.traps = (q.traps || []).filter(([v]) => Math.abs(v - q.ans) > 1e-9);
+  dq = q; store.set('drill', drill);
+}
+
+/* 장면: 기구(명판) · 주어진 값 · 에너지 블록 · 식 */
+class DrillScene {
+  constructor(el) { this.el = el; this.p = 'dr-'; this.mode = 'land'; }
+  L() {
+    if (this.mode === 'port') return { W: 600, H: 900, port: true, tag: [24, 40], app: { cx: 300, bottom: 262, maxW: 300, maxH: 200, maxS: 1 }, plate: [140, 276, 320, 40], card: [24, 340, 552, 250], blk: [24, 612, 552, 152], eq: [24, 784, 552, 96], cmpApp: [150, 450], cmpBox: { bottom: 230, maxW: 230, maxH: 170, maxS: 1 }, cmpPlate: 246 };
+    return { W: 1000, H: 600, tag: [40, 40], app: { cx: 205, bottom: 262, maxW: 300, maxH: 205, maxS: 1 }, plate: [55, 278, 300, 40], card: [400, 56, 560, 262], blk: [40, 340, 920, 160], eq: [40, 516, 920, 68], cmpApp: [250, 750], cmpBox: { bottom: 238, maxW: 280, maxH: 180, maxS: 1 }, cmpPlate: 254 };
+  }
+  build() {
+    const L = this.L(), Q = dq; this.L0 = L;
+    let s = svgOpen(L.W, L.H, Q ? v26strip(Q.q) : '계산 연습', L.port ? 'port' : '');
+    s += `<rect width="${L.W}" height="${L.H}" fill="url(#gWall)" class="bg"/>`;
+    if (Q) {
+      const rv = !!Q.revealed;
+      s += `<text x="${L.tag[0]}" y="${L.tag[1]}" class="t-cap strong">${L.port ? '' : DRILL_LV_BY[Q.lv].name + ' · '}${DKIND_NAME[Q.kind]} · 문제 ${Q.no}</text>`;
+      s += Q.vis.type === 'cmp' ? this.cmpTop(Q, L, rv) : this.oneTop(Q, L, rv);
+      s += Q.vis.type === 'cmp' ? this.cmpBars(Q, L, rv) : Q.vis.type === 'days' ? this.days(Q.vis, L, rv) : this.blocks(Q.vis, L, rv);
+      const [ex, ey, ew, eh] = L.eq, lines = [].concat(rv ? Q.eq1 : Q.hintShown ? Q.eqH : Q.eqW);
+      s += `<rect x="${ex}" y="${ey}" width="${ew}" height="${eh}" rx="14" fill="var(--st-plate)" stroke="var(--st-line)"/>`;
+      s += `<text x="${ex + 16}" y="${ey + 20}" class="t-eqk">${rv ? '풀이' : Q.hintShown ? '힌트 — 물음표를 구해요' : '식'}</text>`;
+      const base = lines.length > 1 ? (L.port ? 21 : 20) : (L.port ? 25 : 24), lh = L.port ? 30 : 26;
+      lines.forEach((ln, i) => {
+        const units = [...ln.replace(/\[\[|\]\]|\{\{|\}\}/g, '')].reduce((a, ch) => a + (/[ㄱ-힝]/.test(ch) ? 1 : 0.6), 0);
+        const fs = Math.max(13, Math.min(base, (ew - 40) / Math.max(1, units))).toFixed(1);
+        s += `<text x="${ex + ew / 2}" y="${(ey + eh / 2 + 14 + (i - (lines.length - 1) / 2) * lh).toFixed(1)}" text-anchor="middle" class="t-eq" style="font-size:${fs}px">${eqTxt(ln)}</text>`;
+      });
+    }
+    s += '</svg>';
+    this.el.innerHTML = s;
+    this.svg = this.el.querySelector('svg');
+  }
+  oneTop(Q, L, rv) {
+    let s = '';
+    const a = Q.app, cx0 = L.app.cx, midY = L.app.bottom - 100;
+    if (Q.left === 'clock') s += this.clock(cx0, midY, Q.min, rv);
+    else if (Q.left === 'unit') {
+      s += `<rect x="${cx0 - 130}" y="${midY - 80}" width="260" height="160" rx="18" fill="var(--st-plate)" stroke="var(--st-line)"/>`;
+      s += `<text x="${cx0}" y="${midY - 30}" text-anchor="middle" class="t-dk">전력량의 단위</text><text x="${cx0}" y="${midY + 14}" text-anchor="middle" class="t-dv">1 kWh</text><text x="${cx0}" y="${midY + 52}" text-anchor="middle" class="t-dv">= 1000 Wh</text>`;
+    } else if (a) {
+      const art = ART[a.id](this.p + 'a-'), f = fitArt(art, L.app);
+      s += `<g transform="translate(${f.tx.toFixed(1)} ${f.ty.toFixed(1)}) scale(${f.s.toFixed(4)})">${art.svg}</g>`;
+      const [px, py, pw, ph] = L.plate, ask = Q.plateAsk && !rv;
+      s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="10" fill="var(--st-plate)" stroke="var(--st-line)"/>`;
+      s += `<text x="${px + 14}" y="${py + 26}" class="t-cap">${Q.plateHide ? a.name : '명판'}</text>`;
+      if (!Q.plateHide) s += `<text x="${px + pw - 14}" y="${py + 27}" text-anchor="end" class="t-blk${ask ? ' ask' : ''}">${RATED_V} V~ ${ask ? '?' : a.P} W</text>`;
+    }
+    const [cx, cy, cw, ch] = L.card;
+    s += `<rect x="${cx}" y="${cy}" width="${cw}" height="${ch}" rx="16" fill="var(--st-plate)" stroke="var(--st-line)"/>`;
+    s += `<text x="${cx + 22}" y="${cy + 34}" class="t-cap strong">${a ? a.name : Q.left === 'clock' ? '시간의 단위' : '전력량의 단위'} — 주어진 값</text>`;
+    const rows = Q.given.map(([k, v]) => [k, v, false]).concat([[`구할 것 · ${Q.want[0]}`, rv ? Q.want[2] : `? ${Q.want[1]}`, true]]);
+    const top = cy + 50, rh = (ch - 60) / rows.length;
+    rows.forEach(([k, v, ask], i) => {
+      const y = top + rh * i + rh / 2 + 9;
+      if (i) s += `<path d="M${cx + 18},${(top + rh * i).toFixed(1)} H${cx + cw - 18}" stroke="var(--st-line)"/>`;
+      s += `<text x="${cx + 22}" y="${y.toFixed(1)}" class="t-dk">${k}</text><text x="${cx + cw - 22}" y="${(y + 2).toFixed(1)}" text-anchor="end" class="t-dv${ask && !rv ? ' ask' : ''}">${escapeHtml(v)}</text>`;
+    });
+    return s;
+  }
+  clock(cx, cy, min, rv) {
+    const n = Math.ceil(min / 60), r = n > 1 ? 70 : 92, gap = 20, x0 = cx - (n - 1) * (r + gap / 2);
+    let s = '';
+    for (let i = 0; i < n; i++) {
+      const x = x0 + i * (2 * r + gap), f = Math.min(1, (min - i * 60) / 60);
+      s += `<circle cx="${x}" cy="${cy}" r="${r}" fill="var(--st-plate)" stroke="var(--st-line)" stroke-width="2"/>`;
+      if (f >= 1) s += `<circle cx="${x}" cy="${cy}" r="${r - 6}" fill="var(--e-elec-soft)" stroke="var(--e-elec)" stroke-width="2"/>`;
+      else { const a1 = -Math.PI / 2 + f * 2 * Math.PI, rr = r - 6; s += `<path d="M${x},${cy} L${x},${cy - rr} A${rr},${rr} 0 ${f > 0.5 ? 1 : 0} 1 ${(x + Math.cos(a1) * rr).toFixed(1)},${(cy + Math.sin(a1) * rr).toFixed(1)} Z" fill="var(--e-elec-soft)" stroke="var(--e-elec)" stroke-width="2"/>`; }
+      for (let k = 0; k < 12; k++) { const a = k * Math.PI / 6; s += `<path d="M${(x + Math.cos(a) * (r - 2)).toFixed(1)},${(cy + Math.sin(a) * (r - 2)).toFixed(1)} L${(x + Math.cos(a) * (r - (k % 3 ? 9 : 15))).toFixed(1)},${(cy + Math.sin(a) * (r - (k % 3 ? 9 : 15))).toFixed(1)}" stroke="var(--text-2)" stroke-width="${k % 3 ? 1.5 : 2.5}"/>`; }
+      s += `<circle cx="${x}" cy="${cy}" r="4" fill="var(--text-1)"/>`;
+      s += `<text x="${x}" y="${cy + r + 26}" text-anchor="middle" class="t-blk">${f >= 1 ? '60분 = 1 h' : `${min - i * 60}분`}</text>`;
+    }
+    return s;
+  }
+  blocks(v, L, rv) {
+    const [x, y, w] = L.blk, port = !!L.port, top = y + 34, bh = port ? 60 : 58;
+    let s = `<text x="${x}" y="${y + 16}" class="t-cap strong">${v.title}</text>`;
+    const cell = (bx, bw, f, lab, ask, cap) => {
+      let c = '';
+      if (f >= 0.999) c += `<rect x="${bx.toFixed(1)}" y="${top}" width="${bw.toFixed(1)}" height="${bh}" rx="9" fill="var(--e-elec-soft)" stroke="var(--e-elec)" stroke-width="2"/>`;
+      else c += `<rect x="${bx.toFixed(1)}" y="${top}" width="${bw.toFixed(1)}" height="${bh}" rx="9" fill="none" stroke="var(--e-elec)" stroke-width="1.6" stroke-dasharray="6 5"/><rect x="${bx.toFixed(1)}" y="${top}" width="${Math.max(4, bw * f).toFixed(1)}" height="${bh}" rx="9" fill="var(--e-elec-soft)" stroke="var(--e-elec)" stroke-width="2"/>`;
+      if (lab) c += `<text x="${(bx + (f >= 0.999 ? bw : Math.max(bw * f, bw * 0.5)) / 2).toFixed(1)}" y="${top + bh / 2 + 6}" text-anchor="middle" class="t-blk${ask ? ' ask' : ''}">${escapeHtml(lab)}</text>`;
+      if (cap) c += `<text x="${(bx + bw / 2).toFixed(1)}" y="${top + bh + 20}" text-anchor="middle" class="t-blk sub">${escapeHtml(cap)}</text>`;
+      return c;
+    };
+    const per = rv ? v.per1 : v.per0, perAsk = !rv && /\?/.test(v.per0);
+    if (v.nAsk && !rv) {
+      const bw = port ? 120 : 140;
+      s += cell(x, bw, 1, per, false, `1${v.word}`);
+      s += `<rect x="${x + bw + 12}" y="${top}" width="${w - bw - 12}" height="${bh}" rx="9" fill="none" stroke="var(--text-3)" stroke-width="1.6" stroke-dasharray="8 6"/><text x="${x + bw + 12 + (w - bw - 12) / 2}" y="${top + bh / 2 + 7}" text-anchor="middle" class="t-blk ask">이런 칸이 몇 개? (? ${v.word})</text>`;
+      s += this.brace(x, x + w, top + bh + 34, v.total0, false);
+      return s;
+    }
+    const n = v.n, full = Math.floor(n + 1e-9), frac = Math.round((n - full) * 1e4) / 1e4, count = full + (frac > 0 ? 1 : 0);
+    const MAXC = port ? 6 : 10, ell = count > MAXC, slots = ell ? MAXC : count, gap = 8, ellW = ell ? 46 : 0;
+    const bw = Math.min(port ? 124 : 134, (w - ellW - gap * Math.max(0, slots - 1)) / Math.max(1, slots));
+    let bx = x;
+    for (let i = 0; i < slots; i++) {
+      const last = i === slots - 1, isFrac = last && frac > 0, idx = ell && last ? count : i + 1;
+      if (ell && last) { s += `<text x="${(bx + ellW / 2 - gap / 2).toFixed(1)}" y="${top + bh / 2 + 7}" text-anchor="middle" class="t-blk">…</text>`; bx += ellW; }
+      const cap = isFrac ? v.fracCap : (slots <= 6 || i === 0 || last ? `${idx}${v.word}` : '');
+      s += isFrac ? cell(bx, bw, frac, rv ? v.frac1 : v.frac0, !rv, cap) : cell(bx, bw, 1, per, perAsk, cap);
+      bx += bw + gap;
+    }
+    const tot = rv ? v.total1 : v.total0;
+    if (tot) s += this.brace(x, bx - gap, top + bh + 34, (ell ? `${fmtD(n)}${v.word} 모두 → ` : '') + tot, !rv && /\?/.test(v.total0));
+    return s;
+  }
+  brace(x0, x1, y, label, ask) {
+    return `<path d="M${x0.toFixed(1)},${y - 12} V${y} H${x1.toFixed(1)} V${y - 12}" fill="none" stroke="var(--text-2)" stroke-width="1.6"/><text x="${((x0 + x1) / 2).toFixed(1)}" y="${y + 26}" text-anchor="middle" class="t-blk${ask ? ' ask' : ''}">${escapeHtml(label)}</text>`;
+  }
+  days(v, L, rv) {
+    const [x, y, w] = L.blk, port = !!L.port, cols = port ? 10 : 15, rows = 30 / cols, gap = 5, top = y + 34;
+    const cw = (w - gap * (cols - 1)) / cols, chh = port ? 24 : 22;
+    let s = `<text x="${x}" y="${y + 16}" class="t-cap strong">한 칸 = 하루 동안 사용한 전력량 (${v.per})</text>`;
+    for (let i = 0; i < 30; i++) {
+      const c = i % cols, r = Math.floor(i / cols), bx = x + c * (cw + gap), by = top + r * (chh + gap);
+      s += `<rect x="${bx.toFixed(1)}" y="${by}" width="${cw.toFixed(1)}" height="${chh}" rx="5" fill="var(--e-elec-soft)" stroke="var(--e-elec)" stroke-width="1.4"/><text x="${(bx + cw / 2).toFixed(1)}" y="${by + chh / 2 + 5}" text-anchor="middle" class="t-blk sub" style="font-size:12px">${i + 1}일</text>`;
+    }
+    const by = top + rows * (chh + gap) + 22;
+    s += this.brace(x, x + w, by, `${v.per} × 30일 = ${rv ? v.total1 : v.total0}`, !rv);
+    return s;
+  }
+  cmpTop(Q, L, rv) {
+    let s = '';
+    Q.items.forEach((it, i) => {
+      const cx = L.cmpApp[i], art = ART[it.id](this.p + (i ? 'b-' : 'a-')), f = fitArt(art, Object.assign({ cx }, L.cmpBox));
+      s += `<g transform="translate(${f.tx.toFixed(1)} ${f.ty.toFixed(1)}) scale(${f.s.toFixed(4)})">${art.svg}</g>`;
+      const pw = L.port ? 270 : 330, px = cx - pw / 2, py = L.cmpPlate;
+      s += `<rect x="${px}" y="${py}" width="${pw}" height="${L.port ? 64 : 58}" rx="12" fill="var(--st-plate)" stroke="var(--st-line)"/>`;
+      s += `<text x="${px + 14}" y="${py + 25}" class="t-cap strong">${i ? '㉡' : '㉠'} ${it.name}</text><text x="${px + pw - 14}" y="${py + (L.port ? 52 : 46)}" text-anchor="end" class="t-blk">${it.P} W × ${it.tm}</text>`;
+    });
+    return s;
+  }
+  cmpBars(Q, L, rv) {
+    const [x, y, w] = L.blk, port = !!L.port, top = y + (port ? 44 : 40), rh = port ? 30 : 40;
+    const max = Math.max(Q.items[0].wh, Q.items[1].wh), lw = port ? 0 : 200, bw = w - lw - (port ? 130 : 150);
+    let s = `<text x="${x}" y="${y + 16}" class="t-cap strong">전력량 비교 (막대 길이 = 전력량)</text>`;
+    Q.items.forEach((it, i) => {
+      const ry = port ? top + 10 + i * 64 : top + i * (rh + 12), big = it.wh === max;
+      s += `<text x="${x}" y="${port ? ry - 6 : ry + rh / 2 + 6}" class="t-blk">${i ? '㉡' : '㉠'} ${it.name}</text>`;
+      s += `<rect x="${x + lw}" y="${ry}" width="${bw}" height="${rh}" rx="8" fill="var(--track)"/>`;
+      if (rv) s += `<rect x="${x + lw}" y="${ry}" width="${Math.max(6, bw * it.wh / max).toFixed(1)}" height="${rh}" rx="8" fill="${big ? 'var(--e-heat)' : 'var(--e-elec)'}" opacity=".85"/>`;
+      s += `<text x="${x + lw + bw + 12}" y="${ry + rh / 2 + 6}" class="t-blk${rv ? '' : ' ask'}">${rv ? `${fmtD(it.wh)} Wh${big ? ' ▲' : ''}` : '? Wh'}</text>`;
+    });
+    return s;
+  }
+  statusLines() {
+    const Q = dq;
+    if (!Q) return { cond: '계산 연습', state: '' };
+    return { cond: `계산 연습 · ${DRILL_LV_BY[Q.lv].name} · ${DKIND_NAME[Q.kind]} · 문제 ${Q.no}`, state: `${v26strip(Q.q)} → ${Q.revealed ? eqPlain(Q.eq1) : '풀이 중'}` };
+  }
+}
+
+function buildDrill() {
+  if (!dq || (dq.sel !== drill.lv)) newDrill();
+  const lvBtns = DRILL_LV.map(l => { const st = drill.stats[l.id] || {}; return `<button class="dlv-b ${st.ok ? 'has' : ''}" data-dlv="${l.id}" aria-pressed="${drill.lv === l.id}"><b>${l.name}</b><span>${l.sub}</span><i class="num" title="맞힌 문제">${st.ok || 0}</i></button>`; }).join('');
+  const panel = `<div class="panel-scroll">
+      <section class="pg"><div class="pg-row"><h2 class="pg-title">연습 단계 <small class="dkind">숫자 = 맞힌 문제</small></h2><button class="linkbtn" data-theory="wh">${icon('book')}이론</button></div><div class="dlv" role="group" aria-label="연습 단계">${lvBtns}</div></section>
+      <section class="pg" id="dBox"></section>
+      <section class="pg"><h2 class="pg-title">기억해요</h2><ul class="dmemo"><li><b>소비 전력</b> 1 W = 1초 동안 1 J의 전기 에너지</li><li><b>전력량(Wh)</b> = 소비 전력(W) × 사용 시간(h)</li><li>15분 = 0.25 h · 30분 = 0.5 h · 45분 = 0.75 h</li><li>1 kWh = 1000 Wh</li><li>소비 전력이 커도 짧게 쓰면 전력량이 작을 수 있어요</li></ul></section></div>
+    <div class="panel-foot"><p class="dscore" id="dScore"></p><div class="drow-btns"><button class="btn ghost small" data-dhint="1" id="dHintBtn">${icon('help')}<span>힌트</span></button><button class="btn ghost small" data-dshow="1" id="dShowBtn">풀이 보기</button><button class="btn primary" data-dnext="1" id="dNextBtn">${icon('step')}<span>다음 문제</span></button></div></div>`;
+  $('#main').innerHTML = labShell('drill', { tools: '<span class="bh-note">명판의 소비 전력과 사용 시간을 보고 식을 세워요 · 맞히면 그림에 값이 채워져요</span>', panel, panelLabel: '계산 연습' });
+  mountScene(new DrillScene($('#stage')));
+  renderDrillQ();
+}
+function renderDrillQ() {
+  const box = $('#dBox'); if (!box || !dq) return;
+  const Q = dq;
+  const ctl = Q.ask === 'choice'
+    ? `<div class="crow choice" role="group" aria-label="답 고르기">${Q.options.map(([v, l]) => `<button class="btn small" data-dchoice="${v}" aria-pressed="${Q.picked === v}" ${Q.solved || Q.revealed ? 'disabled' : ''}>${escapeHtml(l)}</button>`).join('')}</div>`
+    : `<div class="crow"><input type="text" inputmode="decimal" autocomplete="off" id="dIn" value="${escapeHtml(Q.last || '')}" aria-label="답 (${Q.unit})" placeholder="숫자" ${Q.solved || Q.revealed ? 'readonly' : ''}><span class="cu">${Q.unit}</span><button class="btn small" data-dcheck="1" ${Q.solved || Q.revealed ? 'disabled' : ''}>확인</button></div>`;
+  box.innerHTML = `<div class="pg-row"><h2 class="pg-title">문제 <span class="count num">${Q.no}</span></h2><span class="dkind">${DRILL_LV_BY[Q.lv].name} · ${DKIND_NAME[Q.kind]}</span></div>
+    <div class="cstep dcard" data-state="${Q.solved ? 'ok' : Q.tries ? 'bad' : ''}">
+      <p class="dq-text">${Q.q}</p>${ctl}
+      <p class="cfb" id="dFb" role="status">${Q.fb || ''}</p>
+      <p class="dhint" id="dHint" ${Q.hintShown ? '' : 'hidden'}>${icon('help')}<span>${Q.hint}</span></p>
+      <ol class="dsteps" ${Q.revealed ? '' : 'hidden'}>${Q.steps.map(x => `<li>${x}</li>`).join('')}</ol>
+    </div>`;
+  syncDrillFoot();
+}
+function syncDrillFoot() {
+  const tot = Object.values(drill.stats).reduce((a, s) => a + (s.ok || 0), 0);
+  const sc = $('#dScore'); if (sc) sc.innerHTML = `맞힌 문제 <b class="num">${tot}</b> · 연속 정답 <b class="num">${drill.streak || 0}</b> · 최고 <b class="num">${drill.best || 0}</b>`;
+  const hb = $('#dHintBtn'), sb = $('#dShowBtn');
+  if (hb) hb.disabled = !dq || dq.revealed || dq.hintShown;
+  if (sb) sb.disabled = !dq || dq.revealed;
+  $$('.dlv-b').forEach(b => { const st = drill.stats[b.dataset.dlv] || {}; b.setAttribute('aria-pressed', b.dataset.dlv === drill.lv); b.classList.toggle('has', !!st.ok); const i = b.querySelector('i'); if (i) i.textContent = st.ok || 0; });
+  setStatus(drillStatus());
+}
+function drillStatus() {
+  if (!dq) return '';
+  if (dq.solved) return `정답이에요 — ${eqPlain(dq.eq1)}. ‘다음 문제’(Enter)로 계속해요.`;
+  if (dq.revealed) return `풀이: ${eqPlain(dq.eq1)}. 다음 문제에서 다시 도전해요.`;
+  if (dq.hintShown) return `힌트: ${eqPlain(dq.eqH)} — 물음표에 들어갈 값을 구해요.`;
+  return '그림의 명판과 주어진 값을 보고 식을 세워 계산해요. 막히면 ‘힌트’를 눌러요.';
+}
+function focusDrill() { const i = $('#dIn'); if (i && matchMedia('(pointer:fine)').matches && !i.readOnly) i.focus({ preventScroll: true }); }
+function drillStat() { return drill.stats[dq.sel] || (drill.stats[dq.sel] = { n: 0, ok: 0, first: 0 }); }
+function checkDrill(val) {
+  const Q = dq; if (!Q || Q.solved || Q.revealed) return;
+  let ok, n;
+  if (Q.ask === 'choice') { ok = val === Q.ans; Q.picked = val; }
+  else {
+    n = parseNum(val); Q.last = val;
+    if (!Number.isFinite(n)) { Q.fb = '숫자로 적어 주세요.'; renderDrillQ(); focusDrill(); return; }
+    ok = Math.abs(n - Q.ans) <= Math.max(1e-6, Math.abs(Q.ans) * 1e-4, Q.tol || 0);
+  }
+  const st = drillStat();
+  if (!Q.tries) st.n++;
+  Q.tries++;
+  if (ok) {
+    Q.solved = true; Q.revealed = true; st.ok++;
+    if (Q.tries === 1) { st.first++; drill.streak = (drill.streak || 0) + 1; drill.best = Math.max(drill.best || 0, drill.streak); }
+    Q.fb = `${icon('check')}맞아요! ${v26strip(Q.steps[Q.steps.length - 1])}`;
+  } else {
+    drill.streak = 0;
+    const trap = Q.ask !== 'choice' && (Q.traps || []).find(([v]) => Math.abs(n - v) <= Math.max(1e-6, Math.abs(v) * 1e-4));
+    Q.fb = trap ? `아까워요! ${trap[1]}` : `다시 계산해 볼까요? ${Q.hint}${Q.tries >= 2 ? ' — 막히면 ‘풀이 보기’를 눌러요.' : ''}`;
+  }
+  store.set('drill', drill);
+  renderDrillQ(); cur.scene.build();
+  if (ok) { announce('정답이에요'); const nb = $('#dNextBtn'); if (nb && matchMedia('(pointer:fine)').matches) nb.focus({ preventScroll: true }); }
+  else focusDrill();
+}
+function drillHint() { if (!dq || dq.revealed || dq.hintShown) return; dq.hintShown = true; renderDrillQ(); cur.scene.build(); focusDrill(); }
+function drillShow() {
+  if (!dq || dq.revealed) return;
+  const st = drillStat(); if (!dq.tries) st.n++;
+  dq.revealed = true; dq.shown = true; drill.streak = 0; dq.fb = '풀이를 살펴보고, 다음 문제에서 다시 도전해요.';
+  store.set('drill', drill); renderDrillQ(); cur.scene.build();
+}
+function drillNext() { newDrill(); renderDrillQ(); cur.scene.build(); focusDrill(); }
+
+/* ═════════════════ ⑦ 에너지 소비 효율 등급 라벨 분석 ═════════════════ */
+const TAG = { A: '㉠', B: '㉡' };
+/* 교과서 냉장고 표 + 교육용 예시값. 예시값은 이 실험실의 환산(1 kWh ≈ 160원, 0.425 kg/kWh)에 맞춰
+   CO₂(g/시간) = 월간 kWh ÷ 720시간 × 425, 연간 비용 = 월간 kWh × 12 × 160원(천 원 단위 반올림)으로 정했다. */
+const LABEL_SETS = [
+  { id: 'fr15', name: '냉장고 1등급 vs 5등급', kind: '냉장고', specK: '용량', specV: '714 L', book: true, A: { grade: 1, kwh: 30.8, co2: 18.2, cost: 59000 }, B: { grade: 5, kwh: 46.5, co2: 27.4, cost: 94000 } },
+  { id: 'fr13', name: '냉장고 1등급 vs 3등급', kind: '냉장고', specK: '용량', specV: '714 L', book: true, A: { grade: 1, kwh: 30.8, co2: 18.2, cost: 59000 }, B: { grade: 3, kwh: 37.4, co2: 22.1, cost: 72000 } },
+  { id: 'kim', name: '김치냉장고 두 제품', kind: '김치냉장고', specK: '용량', specV: '500 L', A: { grade: 4, kwh: 28.9, co2: 17.1, cost: 55000 }, B: { grade: 2, kwh: 19.6, co2: 11.6, cost: 38000 } },
+  { id: 'tv', name: '텔레비전 두 제품', kind: '텔레비전', specK: '화면 크기', specV: '165 cm', A: { grade: 1, kwh: 18.5, co2: 10.9, cost: 36000 }, B: { grade: 4, kwh: 30.2, co2: 17.8, cost: 58000 } },
+  { id: 'air', name: '공기청정기 두 제품', kind: '공기청정기', specK: '사용 면적', specV: '60 m²', A: { grade: 3, kwh: 22.5, co2: 13.3, cost: 43000 }, B: { grade: 1, kwh: 14.8, co2: 8.7, cost: 28000 } },
+  { id: 'mine', name: '직접 입력', kind: '우리 집 제품', custom: true },
+];
+const LABEL_SET_BY = Object.fromEntries(LABEL_SETS.map(s => [s.id, s]));
+const LKEYS = ['grade', 'kwh', 'co2', 'cost'];
+function freshLabel() { return { set: 'fr15', read: {}, ana: {}, concl: {}, fb: {}, custom: { kind: '', spec: '', A: {}, B: {} } }; }
+let labelSt = Object.assign(freshLabel(), store.get('label', null) || {});
+function saveLabel() { store.set('label', labelSt); }
+function curLabelSet() { return LABEL_SET_BY[labelSt.set] || LABEL_SETS[0]; }
+function readOf(id) { return labelSt.read[id] || (labelSt.read[id] = { A: {}, B: {} }); }
+function anaOf(id) { return labelSt.ana[id] || (labelSt.ana[id] = {}); }
+function labelData(set) {
+  if (!set.custom) return { kind: set.kind, A: Object.assign({ specK: set.specK, specV: set.specV }, set.A), B: Object.assign({ specK: set.specK, specV: set.specV }, set.B) };
+  const c = labelSt.custom, num = v => (v === '' || v == null) ? NaN : parseNum(v);
+  const mk = w => ({ grade: +(c[w] || {}).grade || NaN, kwh: num((c[w] || {}).kwh), co2: num((c[w] || {}).co2), cost: num((c[w] || {}).cost), specK: '크기·용량', specV: c.spec || '-' });
+  return { kind: c.kind || '우리 집 제품', A: mk('A'), B: mk('B') };
+}
+function labelAna(set) {
+  const X = set.A.grade < set.B.grade ? 'A' : 'B', Y = X === 'A' ? 'B' : 'A', x = set[X], y = set[Y];
+  const r1 = v => Math.round(v * 10) / 10, dk = r1(y.kwh - x.kwh), dc = y.cost - x.cost, pc = Math.round((y.kwh - x.kwh) / y.kwh * 100), dco = Math.round((y.co2 - x.co2) * 8760 / 1000);
+  return [
+    { id: 'a1', type: 'choice', q: '에너지 소비 효율이 <b>더 높은</b> 제품은 어느 것일까요?', options: ['㉠', '㉡'], ans: TAG[X], show: `${TAG[X]} ${x.grade}등급 — 등급 숫자가 작을수록(1등급에 가까울수록) 효율이 높아요`, hint: '라벨 ①의 등급 숫자를 비교해요.' },
+    { id: 'a2', q: '두 제품의 <b>월간 소비 전력량</b>은 몇 kWh 차이 날까요?', unit: 'kWh', ans: dk, tol: 0.05, show: `${fmt1(y.kwh)} − ${fmt1(x.kwh)} = ${fmt1(dk)} kWh`, hint: '라벨 ②의 값끼리 빼요.' },
+    { id: 'a3', q: '<b>1년(12개월)</b> 동안이면 소비 전력량은 몇 kWh 차이 날까요?', unit: 'kWh', ans: r1(dk * 12), tol: 0.05, show: `${fmt1(dk)} kWh × 12 = ${fmt1(dk * 12)} kWh`, hint: '한 달 차이에 12를 곱해요.' },
+    { id: 'a4', q: '1년 동안 드는 <b>에너지 비용</b>은 몇 원 차이 날까요?', unit: '원', ans: dc, tol: 0.5, show: `${fmtInt(y.cost)} − ${fmtInt(x.cost)} = ${fmtInt(dc)}원`, hint: '라벨 ④ 연간 에너지 비용끼리 빼요.' },
+    { id: 'a5', q: '효율이 높은 제품을 <b>10년</b> 동안 쓰면 에너지 비용을 몇 원 아낄까요?', unit: '원', ans: dc * 10, tol: 0.5, show: `${fmtInt(dc)}원 × 10년 = ${fmtInt(dc * 10)}원`, hint: '1년 비용 차이에 10을 곱해요.' },
+    { id: 'a6', q: '효율이 높은 제품은 월간 소비 전력량이 약 몇 % 적을까요? <span class="f">소수 첫째 자리에서 반올림</span>', unit: '%', ans: pc, tol: 1, show: `(${fmt1(y.kwh)} − ${fmt1(x.kwh)}) ÷ ${fmt1(y.kwh)} × 100 ≈ ${pc} %`, hint: '차이 ÷ 효율이 낮은 제품의 월간 소비 전력량 × 100' },
+    { id: 'a7', extra: true, q: '더 해 보기 — 1년(365일 × 24시간 = 8760시간) 동안 <b>CO₂ 배출량</b>은 약 몇 kg 차이 날까요? <span class="f">1 kg = 1000 g</span>', unit: 'kg', ans: dco, tol: 1, show: `(${fmt1(y.co2)} − ${fmt1(x.co2)}) g × 8760 ÷ 1000 ≈ ${dco} kg`, hint: '라벨 ③은 1시간 동안의 양이에요. 1시간 차이 × 8760 ÷ 1000' },
+  ];
+}
+function labelModel(set) {
+  const X = set.A.grade < set.B.grade ? 'A' : 'B', Y = X === 'A' ? 'B' : 'A', x = set[X], y = set[Y];
+  const dk = Math.round((y.kwh - x.kwh) * 10) / 10, dc = y.cost - x.cost, pc = Math.round((y.kwh - x.kwh) / y.kwh * 100), dco = Math.round((y.co2 - x.co2) * 8760 / 1000);
+  return `${TAG[X]} 제품(${x.grade}등급)을 고르겠다. 두 제품은 ${set.specK}(${set.specV})과 성능이 같은데, ${TAG[X]} 제품의 월간 소비 전력량이 ${fmt1(dk)} kWh(약 ${pc} %) 적어서 1년에 에너지 비용을 ${fmtInt(dc)}원, 10년이면 ${fmtInt(dc * 10)}원 아낄 수 있다. 이산화 탄소도 1년에 약 ${dco} kg 덜 나오므로 환경을 지키는 데에도 도움이 된다.`;
+}
+function readOkCount(set) { if (set.custom) return 0; const r = readOf(set.id); return ['A', 'B'].reduce((n, w) => n + LKEYS.filter(k => r[w][k] && r[w][k].ok).length, 0); }
+function anaOkCount(set) { if (set.custom) return 0; const a = anaOf(set.id); return Object.values(a).filter(v => v && v.ok).length; }
+function labelDone(set) { return !set.custom && readOkCount(set) === 8 && labelAna(set).filter(c => !c.extra).every(c => (anaOf(set.id)[c.id] || {}).ok); }
+function labelTouched(set) {
+  if (set.custom) { const c = labelSt.custom; return !!(c.kind || c.spec || ['A', 'B'].some(w => LKEYS.some(k => c[w] && c[w][k] !== undefined && c[w][k] !== '')) || (labelSt.concl.mine || '').trim()); }
+  const r = labelSt.read[set.id], a = labelSt.ana[set.id];
+  return !!((r && ['A', 'B'].some(w => Object.keys(r[w] || {}).length)) || (a && Object.keys(a).length) || (labelSt.concl[set.id] || '').trim());
+}
+function labelHasData() { return LABEL_SETS.some(labelTouched); }
+
+/* 라벨 그림 — 교과서 등급 표(gradeLabel)와 같은 모양, 값은 인자로 받는다. 비어 있으면 ? */
+function effLabel(d, p) {
+  const W = 250, cx = 125, cy = 132, R = 98, r = 60, has = v => Number.isFinite(v);
+  const g = has(d.grade) && d.grade >= 1 && d.grade <= 5 ? Math.round(d.grade) : null;
+  let s = `<rect x="0" y="0" width="${W}" height="352" rx="18" fill="var(--label-bg)" stroke="var(--label-ink)" stroke-width="3"/>`;
+  s += `<g id="${p}r-grade" class="lrow"><rect x="10" y="10" width="${W - 20}" height="${cy + 74}" rx="12" fill="transparent" class="lrow-bg"/></g>`;
+  for (let i = 0; i < 5; i++) {
+    const a0 = Math.PI + i * Math.PI / 5 + 0.012, a1 = Math.PI + (i + 1) * Math.PI / 5 - 0.012;
+    const P = (a, rad) => `${(cx + Math.cos(a) * rad).toFixed(1)},${(cy + Math.sin(a) * rad).toFixed(1)}`;
+    s += `<path d="M${P(a0, R)} A${R},${R} 0 0 1 ${P(a1, R)} L${P(a1, r)} A${r},${r} 0 0 0 ${P(a0, r)}Z" fill="var(--g${i + 1})"/>`;
+    const am = (a0 + a1) / 2;
+    s += `<text x="${(cx + Math.cos(am) * (R + r) / 2).toFixed(1)}" y="${(cy + Math.sin(am) * (R + r) / 2 + 6).toFixed(1)}" text-anchor="middle" class="t-gauge">${i + 1}</text>`;
+  }
+  if (g) {
+    const am = Math.PI + (g - 0.5) * Math.PI / 5, tip = [cx + Math.cos(am) * (r - 6), cy + Math.sin(am) * (r - 6)];
+    const bl = [cx + Math.cos(am + 1.35) * 12, cy + Math.sin(am + 1.35) * 12], br = [cx + Math.cos(am - 1.35) * 12, cy + Math.sin(am - 1.35) * 12];
+    s += `<path d="M${tip[0].toFixed(1)},${tip[1].toFixed(1)} L${bl[0].toFixed(1)},${bl[1].toFixed(1)} L${br[0].toFixed(1)},${br[1].toFixed(1)}Z" fill="var(--label-ink)"/><circle cx="${cx}" cy="${cy}" r="10" fill="var(--label-ink)"/>`;
+    s += `<text x="${cx}" y="${cy + 54}" text-anchor="middle" class="t-grade" fill="var(--g${g})">${g}</text>`;
+  } else s += `<circle cx="${cx}" cy="${cy}" r="10" fill="var(--label-ink)" opacity=".4"/><text x="${cx}" y="${cy + 54}" text-anchor="middle" class="t-grade" fill="var(--label-ink)" opacity=".4">?</text>`;
+  s += `<text x="${cx}" y="${cy + 80}" text-anchor="middle" class="t-label-h">에너지 소비 효율 등급</text><path d="M16,${cy + 94} H${W - 16}" stroke="var(--label-ink)" stroke-width="1.6"/>`;
+  const rows = [['kwh', '월간 소비 전력량', has(d.kwh) ? `${fmt1(d.kwh)} kWh/월` : '? kWh/월'], ['co2', 'CO₂ 배출량', has(d.co2) ? `${fmt1(d.co2)} g/시간` : '? g/시간'], ['spec', d.specK || '크기', d.specV || '-']];
+  rows.forEach(([k, a, b], i) => {
+    const y = cy + 118 + i * 26;
+    s += `<g id="${p}r-${k}" class="lrow"><rect x="10" y="${y - 18}" width="${W - 20}" height="24" rx="5" fill="transparent" class="lrow-bg"/><text x="18" y="${y}" class="t-label">${a}</text><text x="${W - 18}" y="${y}" text-anchor="end" class="t-label-b">${escapeHtml(b)}</text></g>`;
+  });
+  s += `<g id="${p}r-cost" class="lrow"><rect x="12" y="${cy + 180}" width="${W - 24}" height="34" rx="7" fill="${g ? `var(--g${g})` : 'var(--label-ink)'}" opacity=".2"/><rect x="12" y="${cy + 180}" width="${W - 24}" height="34" rx="7" fill="transparent" class="lrow-bg"/><text x="20" y="${cy + 202}" class="t-label">연간 에너지 비용</text><text x="${W - 20}" y="${cy + 203}" text-anchor="end" class="t-label-cost">${has(d.cost) ? `${fmtInt(d.cost)}원` : '?원'}</text></g>`;
+  // ①~④ 읽기 표시 (라벨 바깥 왼쪽)
+  [[1, 46], [2, cy + 113], [3, cy + 139], [4, cy + 197]].forEach(([n, y]) => { s += `<circle cx="-17" cy="${y}" r="11" fill="var(--surface-1)" stroke="var(--text-2)" stroke-width="1.5"/><text x="-17" y="${y + 4.5}" text-anchor="middle" class="t-mk">${n}</text>`; });
+  return s;
+}
+class RateLabelScene {
+  constructor(el) { this.el = el; this.p = 'rl-'; this.mode = 'land'; this.focus = null; }
+  L() {
+    if (this.mode === 'port') return { W: 600, H: 650, xs: [56, 326], y: 70, k: 0.88, ana: [24, 400, 552, 230], port: true };
+    return { W: 1000, H: 600, xs: [150, 600], y: 56, k: 1, ana: [40, 428, 920, 156] };
+  }
+  build() {
+    const L = this.L(), set = curLabelSet(), D = labelData(set);
+    let s = svgOpen(L.W, L.H, `${set.name} — 에너지 소비 효율 등급 라벨 두 장 비교`, L.port ? 'port' : '');
+    s += `<rect width="${L.W}" height="${L.H}" fill="url(#gWall)" class="bg"/>`;
+    ['A', 'B'].forEach((w, i) => {
+      const x = L.xs[i];
+      s += `<text x="${x}" y="${L.y - 16}" class="t-cap strong">제품 ${TAG[w]}${L.port ? '' : ` · ${escapeHtml(D.kind)}`}</text>`;
+      s += `<g transform="translate(${x} ${L.y}) scale(${L.k})">${effLabel(D[w], this.p + w + '-')}</g>`;
+    });
+    s += this.anaSvg(L, D, set);
+    s += '</svg>';
+    this.el.innerHTML = s;
+    this.svg = this.el.querySelector('svg');
+    this.applyFocus();
+  }
+  anaSvg(L, D, set) {
+    const [x, y, w, h] = L.ana, port = !!L.port, an = set.custom ? null : anaOf(set.id);
+    const solved = id => set.custom || !!(an[id] && an[id].ok);
+    const rows = [
+      { k: 'kwh', name: '월간 소비 전력량', f: v => `${fmt1(v)} kWh`, ok: solved('a2'), diff: v => `차이 ${fmt1(v)} kWh` },
+      { k: 'cost', name: '연간 에너지 비용', f: v => `${fmtInt(v)}원`, ok: solved('a4'), diff: v => `차이 ${fmtInt(v)}원` },
+      { k: 'co2', name: 'CO₂ 배출량', f: v => `${fmt1(v)} g/시간`, ok: solved('a7'), diff: v => `1년 차이 약 ${fmtInt(v * 8.76)} kg` },
+    ];
+    let s = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="var(--st-plate)" stroke="var(--st-line)"/>`;
+    const rh = h / 3, lx = x + 18, bx = port ? x + 56 : x + 190, bwMax = port ? w - 56 - 150 : w - 190 - 330, dx = x + w - 18;
+    rows.forEach((r, i) => {
+      const ry = y + rh * i, a = D.A[r.k], b = D.B[r.k], has = Number.isFinite(a) && Number.isFinite(b), mx = Math.max(Number.isFinite(a) ? a : 0, Number.isFinite(b) ? b : 0, 1e-9);
+      if (i) s += `<path d="M${x + 14},${ry.toFixed(1)} H${x + w - 14}" stroke="var(--st-line)"/>`;
+      const by0 = port ? ry + 36 : ry + rh / 2 - 15, bh = port ? 14 : 12;
+      s += `<text x="${lx}" y="${(port ? ry + 24 : ry + rh / 2 + 5).toFixed(1)}" class="t-blk">${r.name}</text>`;
+      ['A', 'B'].forEach((wv, j) => {
+        const v = D[wv][r.k], g = D[wv].grade, yy = by0 + j * (bh + 6);
+        s += `<text x="${bx - 8}" y="${(yy + bh - 1).toFixed(1)}" text-anchor="end" class="t-blk sub" style="font-size:13px">${TAG[wv]}</text><rect x="${bx}" y="${yy.toFixed(1)}" width="${bwMax}" height="${bh}" rx="4" fill="var(--track)"/>`;
+        if (Number.isFinite(v)) s += `<rect x="${bx}" y="${yy.toFixed(1)}" width="${Math.max(3, bwMax * v / mx).toFixed(1)}" height="${bh}" rx="4" fill="${Number.isFinite(g) ? `var(--g${Math.min(5, Math.max(1, Math.round(g)))})` : 'var(--e-elec)'}"/>`;
+        s += `<text x="${bx + bwMax + 8}" y="${(yy + bh - 1).toFixed(1)}" class="t-blk sub" style="font-size:13px">${Number.isFinite(v) ? r.f(v) : '-'}</text>`;
+      });
+      if (has) s += `<text x="${dx}" y="${(port ? ry + 24 : ry + rh / 2 + 5).toFixed(1)}" text-anchor="end" class="t-blk${r.ok ? '' : ' ask'}">${r.ok ? r.diff(Math.abs(a - b)) : '차이 ?'}</text>`;
+    });
+    return s;
+  }
+  setFocus(w, k) { this.focus = w && k ? [w, k] : null; this.applyFocus(); }
+  applyFocus() {
+    if (!this.svg) return;
+    const id = this.focus ? `${this.p}${this.focus[0]}-r-${this.focus[1]}` : '';
+    this.svg.querySelectorAll('.lrow').forEach(r => r.classList.toggle('on', r.id === id));
+  }
+  statusLines() {
+    const set = curLabelSet(), D = labelData(set), one = w => { const d = D[w]; return `${TAG[w]} ${Number.isFinite(d.grade) ? d.grade + '등급' : '?등급'} · ${Number.isFinite(d.kwh) ? fmt1(d.kwh) : '?'} kWh/월 · ${Number.isFinite(d.co2) ? fmt1(d.co2) : '?'} g/시간 · ${Number.isFinite(d.cost) ? fmtInt(d.cost) : '?'}원/년`; };
+    return { cond: `등급 라벨 분석 · ${set.name}${set.custom ? '' : ` (${set.kind} · ${set.specK} ${set.specV})`}`, state: `${one('A')} / ${one('B')}${set.custom ? '' : ` · 라벨 읽기 ${readOkCount(set)}/8 · 분석 ${anaOkCount(set)}/7`}` };
+  }
+}
+
+function buildLabel() {
+  const set = curLabelSet(), custom = !!set.custom;
+  const sets = LABEL_SETS.map(s => `<button class="dlv-b ${labelDone(s) ? 'has' : ''}" data-lset="${s.id}" aria-pressed="${s.id === set.id}"><b>${s.name}</b><span>${s.custom ? '집에서 본 라벨 값을 적어요' : s.book ? '교과서 등급 표 값' : `${s.specK} ${s.specV} · 예시값`}</span>${s.custom ? '' : `<i>${labelDone(s) ? '✓' : ''}</i>`}</button>`).join('');
+  const meta = custom ? `<div class="lmeta"><label>제품 종류<input type="text" id="lin-kind" data-lmeta="kind" autocomplete="off" placeholder="예) 냉장고" value="${escapeHtml(labelSt.custom.kind || '')}"></label><label>크기·용량<input type="text" id="lin-spec" data-lmeta="spec" autocomplete="off" placeholder="예) 500 L" value="${escapeHtml(labelSt.custom.spec || '')}"></label></div>` : '';
+  const panel = `<div class="panel-scroll">
+      <section class="pg"><div class="pg-row"><h2 class="pg-title">비교할 두 제품</h2><button class="linkbtn" data-theory="label">${icon('book')}이론</button></div>
+        <div class="dlv lsets" role="group" aria-label="비교할 제품 고르기">${sets}</div>
+        <p class="help">${custom ? '집이나 가게에서 본 라벨 두 장의 값을 적으면 라벨 그림과 비교 결과가 바로 바뀌어요. <b>크기·성능이 비슷한 제품끼리</b> 비교해요.' : set.book ? '교과서의 ‘크기와 성능이 같은 냉장고’ 에너지 소비 효율 등급 표 값이에요.' : '크기·성능이 같은 두 제품의 교육용 예시값이에요(실제 제품 값이 아니에요).'}</p></section>
+      <section class="pg"><div class="pg-row"><h2 class="pg-title">① 라벨 ${custom ? '값 적기' : '읽기'}</h2><span class="count num" id="lReadCnt"></span></div>
+        <p class="help">칸을 누르면 그림의 라벨에서 그 줄이 노랗게 표시돼요.</p>${meta}${['A', 'B'].map(w => readGroup(w, set)).join('')}</section>
+      <section class="pg"><div class="pg-row"><h2 class="pg-title">② 분석하기</h2><span class="count num" id="lAnaCnt"></span></div>
+        ${custom ? '<div id="lAuto"></div>' : anaHtml(set)}</section>
+      <section class="pg"><div class="pg-row"><h2 class="pg-title">③ 나의 결론</h2>${custom ? '' : '<button class="linkbtn" data-lmodel="1">예시 답안</button>'}</div>
+        <p class="help">어떤 제품을 고르겠나요? 라벨에서 읽은 값과 분석한 값을 근거로 써 보세요.</p>
+        <textarea id="lConcl" rows="4" placeholder="예) ㉠ 제품을 고르겠다. 왜냐하면 …">${escapeHtml(labelSt.concl[set.id] || '')}</textarea>
+        ${custom ? '' : `<p class="lmodel" id="lModel" hidden>${labelModel(set)}</p>`}</section></div>`;
+  $('#main').innerHTML = labShell('label', { tools: '<span class="bh-note">라벨의 ①~④를 찾아 읽고 · 두 제품을 비교해 분석해요</span>', panel, panelLabel: '라벨 읽기와 분석' });
+  mountScene(new RateLabelScene($('#stage')));
+  if (custom) $('#lAuto').innerHTML = autoAnaHtml();
+  syncLabelCounts();
+}
+function readGroup(w, set) {
+  const custom = !!set.custom, r = custom ? null : readOf(set.id)[w], c = labelSt.custom[w] || {};
+  const val = k => custom ? (c[k] == null ? '' : c[k]) : (r[k] && r[k].v != null ? r[k].v : '');
+  const okc = k => custom || !r[k] ? '' : r[k].ok === true ? 'ok' : r[k].ok === false ? 'bad' : '';
+  const mark = k => { const o = okc(k); return `<span class="lok ${o}" id="lok-${w}-${k}">${o === 'ok' ? icon('check') : o === 'bad' ? '!' : ''}</span>`; };
+  const gv = custom ? (+c.grade || 0) : (r.grade ? (+r.grade.v || 0) : 0);
+  const field = (k, name, unit, mk) => `<label class="lfield"><span class="lk"><i class="mk">${mk}</i>${name}</span><input type="text" inputmode="decimal" autocomplete="off" id="lin-${w}-${k}" data-lin="${w}-${k}" data-lfocus="${w}-${k}" class="${okc(k)}" value="${escapeHtml(val(k))}" placeholder="${custom ? '라벨 값' : '읽은 값'}" aria-label="제품 ${TAG[w]} ${name} (${unit})"><span class="cu">${unit}</span>${mark(k)}</label>`;
+  return `<div class="lread" data-who="${w}"><h3 class="lread-h"><span class="ltag">${TAG[w]}</span>제품 ${TAG[w]} 라벨</h3>
+    <div class="lfield"><span class="lk"><i class="mk">1</i>효율 등급</span><div class="gpick" role="group" aria-label="제품 ${TAG[w]} 효율 등급">${[1, 2, 3, 4, 5].map(g => `<button data-lg="${g}" data-who="${w}" data-lfocus="${w}-grade" aria-pressed="${gv === g}" aria-label="${g}등급" style="--gc:var(--g${g})">${g}</button>`).join('')}</div>${mark('grade')}</div>
+    ${field('kwh', '월간 소비 전력량', 'kWh/월', 2)}${field('co2', 'CO₂ 배출량', 'g/시간', 3)}${field('cost', '연간 에너지 비용', '원/년', 4)}
+    ${custom ? '' : (() => { const f = (labelSt.fb || {})[set.id + w] || {}; return `<div class="lread-foot"><p class="cfb ${f.ok ? 'good' : ''}" id="lfb-${w}" role="status">${f.msg || ''}</p><button class="btn small" data-lchk="${w}">확인</button></div>`; })()}</div>`;
+}
+function anaHtml(set) {
+  const A = anaOf(set.id);
+  return `<ol class="csteps">${labelAna(set).map((c, i) => {
+    const v = A[c.id] || {}, tried = v.v != null && v.v !== '';
+    const ctl = c.type === 'choice'
+      ? `<div class="crow choice" role="group" aria-label="답 고르기">${c.options.map(o => `<button class="btn small" data-lchoice="${c.id}" data-v="${o}" aria-pressed="${v.v === o}">${o} 제품</button>`).join('')}</div>`
+      : `<div class="crow"><input type="text" inputmode="decimal" autocomplete="off" id="la-${c.id}" value="${tried ? escapeHtml(v.v) : ''}" aria-label="${i + 1}번 답 (${c.unit})" placeholder="숫자"><span class="cu">${c.unit}</span><button class="btn small" data-lans="${c.id}">확인</button></div>`;
+    return `<li class="cstep ${c.extra ? 'extra' : ''}" data-state="${v.ok ? 'ok' : tried ? 'bad' : ''}"><p class="cq"><span class="cn num">${i + 1}</span><span>${c.q}</span></p>${ctl}<p class="cfb" id="lafb-${c.id}" role="status">${v.ok ? `${icon('check')}맞아요 · ${c.show}` : tried ? `다시 계산해 볼까요? ${c.hint}` : ''}</p></li>`;
+  }).join('')}</ol>`;
+}
+function autoAnaHtml() {
+  const D = labelData(curLabelSet()), A = D.A, B = D.B, both = k => Number.isFinite(A[k]) && Number.isFinite(B[k]);
+  if (!both('kwh') && !both('cost') && !both('co2')) return '<p class="empty">두 제품의 월간 소비 전력량·연간 에너지 비용·CO₂ 배출량을 적으면 차이를 계산해 보여 줘요.</p>';
+  const rows = [];
+  if (both('kwh')) { rows.push(['월간 소비 전력량', `${fmt1(A.kwh)} kWh`, `${fmt1(B.kwh)} kWh`, `${fmt1(Math.abs(A.kwh - B.kwh))} kWh`]); rows.push(['1년 소비 전력량 (× 12)', `${fmt1(A.kwh * 12)} kWh`, `${fmt1(B.kwh * 12)} kWh`, `${fmt1(Math.abs(A.kwh - B.kwh) * 12)} kWh`]); }
+  if (both('cost')) { rows.push(['연간 에너지 비용', `${fmtInt(A.cost)}원`, `${fmtInt(B.cost)}원`, `${fmtInt(Math.abs(A.cost - B.cost))}원`]); rows.push(['10년 에너지 비용 (× 10)', `${fmtInt(A.cost * 10)}원`, `${fmtInt(B.cost * 10)}원`, `${fmtInt(Math.abs(A.cost - B.cost) * 10)}원`]); }
+  if (both('co2')) rows.push(['1년 CO₂ 배출량 (× 8760시간)', `${fmtInt(A.co2 * 8.76)} kg`, `${fmtInt(B.co2 * 8.76)} kg`, `${fmtInt(Math.abs(A.co2 - B.co2) * 8.76)} kg`]);
+  const notes = [];
+  if (both('grade')) {
+    if (A.grade === B.grade) notes.push('두 제품의 효율 등급이 같아요.');
+    else {
+      const X = A.grade < B.grade ? 'A' : 'B', Y = X === 'A' ? 'B' : 'A';
+      notes.push(`효율 등급은 ${TAG[X]} 제품(${D[X].grade}등급)이 더 높아요.`);
+      if (both('kwh') && D[Y].kwh > 0) {
+        if (D[X].kwh > D[Y].kwh) notes.push('그런데 등급이 높은 제품의 월간 소비 전력량이 더 커요 — 크기·용량이 다른 제품일 수 있어요. 등급은 크기가 비슷한 제품끼리의 효율을 나타내요.');
+        else notes.push(`${TAG[X]} 제품이 한 달에 약 ${Math.round((D[Y].kwh - D[X].kwh) / D[Y].kwh * 100)} % 적게 써요.`);
+      }
+    }
+  }
+  return `<table class="cmp"><thead><tr><th></th><th>㉠</th><th>㉡</th><th>차이</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td><td class="num"><b>${r[3]}</b></td></tr>`).join('')}</tbody></table>${notes.length ? `<p class="help">${notes.join(' ')}</p>` : ''}`;
+}
+function syncLabelCounts() {
+  const set = curLabelSet(), rc = $('#lReadCnt'), ac = $('#lAnaCnt');
+  if (set.custom) {
+    const c = labelSt.custom, filled = ['A', 'B'].reduce((n, w) => n + LKEYS.filter(k => c[w] && c[w][k] !== undefined && c[w][k] !== '' && c[w][k] !== 0).length, 0);
+    if (rc) rc.textContent = `${filled} / 8 칸`; if (ac) ac.textContent = '자동 계산';
+  } else { if (rc) rc.textContent = `${readOkCount(set)} / 8`; if (ac) ac.textContent = `${anaOkCount(set)} / 7`; }
+  $$('[data-lset]').forEach(b => { const s = LABEL_SET_BY[b.dataset.lset], d = labelDone(s); b.classList.toggle('has', d); const i = b.querySelector('i'); if (i) i.textContent = d ? '✓' : ''; });
+  setStatus(labelStatus());
+}
+function labelStatus() {
+  const set = curLabelSet();
+  if (set.custom) return '집이나 가게에서 본 라벨의 ① 등급 ② 월간 소비 전력량 ③ CO₂ 배출량 ④ 연간 에너지 비용을 적으면 그림과 비교 표가 바로 바뀌어요.';
+  const r = readOkCount(set), a = anaOkCount(set);
+  if (r < 8) return `라벨의 ①~④를 찾아 값을 적고 ‘확인’을 눌러요. 지금 ${r}/8칸을 바르게 읽었어요.`;
+  if (a < 6) return `라벨을 모두 바르게 읽었어요. 이제 ‘② 분석하기’에서 두 제품의 차이를 계산해 보세요 (${a}/7).`;
+  return `분석을 마쳤어요 (${a}/7). ‘③ 나의 결론’에 어떤 제품을 고를지 근거와 함께 써 보세요.`;
+}
+function checkRead(w) {
+  const set = curLabelSet(); if (set.custom) return;
+  const truth = set[w], r = readOf(set.id)[w];
+  let okN = 0, filled = 0;
+  LKEYS.forEach(k => {
+    const raw = k === 'grade' ? (r.grade ? r.grade.v : '') : $(`#lin-${w}-${k}`).value;
+    if (raw !== '' && raw != null) filled++;
+    let ok;
+    if (k === 'grade') ok = +raw === truth.grade;
+    else { const n = parseNum(raw); ok = Number.isFinite(n) && Math.abs(n - truth[k]) <= (k === 'cost' ? 0.5 : 0.051); }
+    r[k] = { v: raw, ok }; if (ok) okN++;
+    const m = $(`#lok-${w}-${k}`); if (m) { m.className = `lok ${ok ? 'ok' : 'bad'}`; m.innerHTML = ok ? icon('check') : '!'; }
+    const inp = $(`#lin-${w}-${k}`); if (inp) { inp.classList.toggle('ok', ok); inp.classList.toggle('bad', !ok); }
+  });
+  const msg = okN === 4 ? `${icon('check')}제품 ${TAG[w]} 라벨을 모두 바르게 읽었어요!` : filled < 4 ? `아직 비어 있는 칸이 있어요. 라벨의 ①~④를 모두 읽어 적어요 (${okN}/4).` : `4칸 중 ${okN}칸을 바르게 읽었어요. ! 표시 칸의 값을 라벨에서 다시 찾아보세요. 단위도 확인해요.`;
+  labelSt.fb = labelSt.fb || {}; labelSt.fb[set.id + w] = { msg, ok: okN === 4 };
+  const fb = $('#lfb-' + w); if (fb) { fb.innerHTML = msg; fb.classList.toggle('good', okN === 4); }
+  saveLabel(); syncLabelCounts();
+}
+function checkAna(id, val) {
+  const set = curLabelSet(), c = labelAna(set).find(x => x.id === id), fb = $('#lafb-' + id); if (!c || !fb) return;
+  const li = fb.closest('.cstep');
+  let ok;
+  if (c.type === 'choice') ok = val === c.ans;
+  else {
+    const n = parseNum(val);
+    if (!Number.isFinite(n)) { fb.textContent = '숫자로 적어 주세요.'; li.dataset.state = 'bad'; return; }
+    ok = Math.abs(n - c.ans) <= Math.max(1e-6, c.tol || 0, Math.abs(c.ans) * 1e-4);
+  }
+  anaOf(set.id)[id] = { v: val, ok }; saveLabel();
+  li.dataset.state = ok ? 'ok' : 'bad';
+  fb.innerHTML = ok ? `${icon('check')}맞아요 · ${c.show}` : `다시 계산해 볼까요? ${c.hint}`;
+  if (c.type === 'choice') $$(`[data-lchoice="${id}"]`).forEach(b => b.setAttribute('aria-pressed', b.dataset.v === val));
+  cur.scene.build(); syncLabelCounts();
+}
+
+/* ── 이벤트 연결 (bind()에서 먼저 부른다) ── */
+function v26Click(t, d) {
+  if (d.dlv) { if (drill.lv !== d.dlv) { drill.lv = d.dlv; store.set('drill', drill); newDrill(); renderDrillQ(); cur.scene.build(); } focusDrill(); return true; }
+  if (d.dcheck) { const i = $('#dIn'); if (i) checkDrill(i.value); return true; }
+  if (d.dchoice) { checkDrill(d.dchoice); return true; }
+  if (d.dhint) { drillHint(); return true; }
+  if (d.dshow) { drillShow(); return true; }
+  if (d.dnext) { drillNext(); return true; }
+  if (d.lset) { if (labelSt.set !== d.lset) { labelSt.set = d.lset; saveLabel(); buildLabel(); } return true; }
+  if (d.lg) {
+    const w = d.who, g = +d.lg, set = curLabelSet();
+    if (set.custom) { labelSt.custom[w] = labelSt.custom[w] || {}; labelSt.custom[w].grade = g; }
+    else { readOf(set.id)[w].grade = { v: g }; const m = $(`#lok-${w}-grade`); if (m) { m.className = 'lok'; m.innerHTML = ''; } }
+    saveLabel();
+    t.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.lg === g));
+    cur.scene.focus = [w, 'grade']; cur.scene.build();
+    if (set.custom) { $('#lAuto').innerHTML = autoAnaHtml(); }
+    syncLabelCounts();
+    return true;
+  }
+  if (d.lchk) { checkRead(d.lchk); return true; }
+  if (d.lans) { const i = $('#la-' + d.lans); if (i) checkAna(d.lans, i.value); return true; }
+  if (d.lchoice) { checkAna(d.lchoice, d.v); return true; }
+  if (d.lmodel) { const m = $('#lModel'); if (m) { m.hidden = !m.hidden; t.textContent = m.hidden ? '예시 답안' : '예시 답안 접기'; } return true; }
+  return false;
+}
+function v26Input(t) {
+  if (t.dataset && t.dataset.lin) {
+    const [w, k] = t.dataset.lin.split('-'), set = curLabelSet();
+    if (set.custom) { labelSt.custom[w] = labelSt.custom[w] || {}; labelSt.custom[w][k] = t.value; saveLabel(); cur.scene.build(); $('#lAuto').innerHTML = autoAnaHtml(); syncLabelCounts(); }
+    else { readOf(set.id)[w][k] = { v: t.value }; saveLabel(); t.classList.remove('ok', 'bad'); const m = $(`#lok-${w}-${k}`); if (m) { m.className = 'lok'; m.innerHTML = ''; } }
+    return true;
+  }
+  if (t.dataset && t.dataset.lmeta) { labelSt.custom[t.dataset.lmeta] = t.value; saveLabel(); cur.scene.build(); return true; }
+  if (t.id === 'lConcl') { labelSt.concl[curLabelSet().id] = t.value; saveLabel(); return true; }
+  return false;
+}
+function v26Key(e, t) {
+  if (e.key !== 'Enter' || !t || !t.id) return false;
+  if (t.id === 'dIn') { e.preventDefault(); if (dq && (dq.solved || dq.revealed)) drillNext(); else checkDrill(t.value); return true; }
+  if (t.id.startsWith('lin-') && t.dataset.lin) { e.preventDefault(); checkRead(t.dataset.lin.split('-')[0]); return true; }
+  if (t.id.startsWith('la-')) { e.preventDefault(); checkAna(t.id.slice(3), t.value); return true; }
+  return false;
+}
+/* 해결한 문제에서 Enter → 다음 문제 (입력 칸이 잠긴 뒤 ‘다음 문제’ 단추에 초점이 있을 때는 단추가 처리) */
+document.addEventListener('focusin', e => {
+  const t = e.target;
+  if (S.screen === 'label' && cur.scene && cur.scene.setFocus && t.dataset && t.dataset.lfocus) { const [w, k] = t.dataset.lfocus.split('-'); cur.scene.setFocus(w, k); }
+});
+
+/* ── 학습 리포트에 넣을 계산 연습 · 라벨 분석 ── */
+function reportV26() {
+  let h = '';
+  const lv = DRILL_LV.filter(l => drill.stats[l.id] && drill.stats[l.id].n);
+  if (lv.length) h += `<section class="pv-sec"><h2>4. 소비 전력·전력량 계산 연습</h2><table class="pv-t"><thead><tr><th>연습 단계</th><th>푼 문제</th><th>맞힌 문제</th><th>한 번에 맞힘</th></tr></thead><tbody>${lv.map(l => { const s = drill.stats[l.id]; return `<tr><td>${l.name}</td><td class="num">${s.n}</td><td class="num">${s.ok || 0}</td><td class="num">${s.first || 0}</td></tr>`; }).join('')}</tbody></table><p>최고 연속 정답 ${drill.best || 0}문제</p></section>`;
+  const sets = LABEL_SETS.filter(labelTouched);
+  if (sets.length) {
+    h += `<section class="pv-sec"><h2>5. 에너지 소비 효율 등급 라벨 분석</h2>`;
+    sets.forEach(set => {
+      const D = labelData(set), concl = (labelSt.concl[set.id] || '').trim();
+      h += `<h3 class="pv-h3">${set.custom ? `직접 입력 — ${escapeHtml(D.kind)}${labelSt.custom.spec ? ` (${escapeHtml(labelSt.custom.spec)})` : ''}` : `${set.name} (${set.kind} · ${set.specK} ${set.specV})`}</h3>`;
+      if (set.custom) {
+        const v = (w, k, f) => Number.isFinite(D[w][k]) ? f(D[w][k]) : '-';
+        h += `<table class="pv-t"><thead><tr><th>라벨 항목</th><th>제품 ㉠</th><th>제품 ㉡</th></tr></thead><tbody><tr><td>① 효율 등급</td><td>${v('A', 'grade', x => x + '등급')}</td><td>${v('B', 'grade', x => x + '등급')}</td></tr><tr><td>② 월간 소비 전력량</td><td class="num">${v('A', 'kwh', x => fmt1(x) + ' kWh')}</td><td class="num">${v('B', 'kwh', x => fmt1(x) + ' kWh')}</td></tr><tr><td>③ CO₂ 배출량</td><td class="num">${v('A', 'co2', x => fmt1(x) + ' g/시간')}</td><td class="num">${v('B', 'co2', x => fmt1(x) + ' g/시간')}</td></tr><tr><td>④ 연간 에너지 비용</td><td class="num">${v('A', 'cost', x => fmtInt(x) + '원')}</td><td class="num">${v('B', 'cost', x => fmtInt(x) + '원')}</td></tr></tbody></table>`;
+      } else {
+        const r = readOf(set.id), names = { grade: '① 효율 등급', kwh: '② 월간 소비 전력량', co2: '③ CO₂ 배출량', cost: '④ 연간 에너지 비용' };
+        const cell = (w, k) => { const x = r[w][k]; return x && x.v !== '' && x.v != null ? `${escapeHtml(x.v)} ${x.ok === true ? '○' : x.ok === false ? '×' : ''}` : '-'; };
+        h += `<table class="pv-t"><thead><tr><th>라벨 항목</th><th>제품 ㉠ 읽은 값</th><th>제품 ㉡ 읽은 값</th></tr></thead><tbody>${LKEYS.map(k => `<tr><td>${names[k]}</td><td>${cell('A', k)}</td><td>${cell('B', k)}</td></tr>`).join('')}</tbody></table>`;
+        const an = anaOf(set.id);
+        h += `<table class="pv-t"><tbody>${labelAna(set).map((c, i) => { const v = an[c.id]; return `<tr><td>${i + 1}</td><td>${v26strip(c.q)}</td><td class="num">${v && v.v != null && v.v !== '' ? escapeHtml(v.v) + (c.unit ? ' ' + c.unit : '') : '-'}</td><td>${v ? (v.ok ? '맞음' : '다시 확인') : '안 풂'}</td></tr>`; }).join('')}</tbody></table>`;
+      }
+      h += `<p><b>나의 결론</b> ${concl ? escapeHtml(concl).replace(/\n/g, '<br>') : '<span class="pv-empty">쓰지 않음</span>'}</p>`;
+    });
+    h += `</section>`;
+  }
+  return h;
+}
 
 init();
 initMission();
